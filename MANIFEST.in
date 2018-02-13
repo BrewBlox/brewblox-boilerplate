@@ -1,0 +1,2 @@
+include README.md
+include brewblox_service/plugins/*/info.json
