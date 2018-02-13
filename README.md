@@ -50,6 +50,10 @@ See https://docs.python.org/3.6/distutils/sourcedist.html#specifying-the-files-t
 For a basic plugin, you do not need to change anything in this file.
 
 
+### [.travis.yml](./.travis.yml)
+Travis CI configuration. If you haven't enabled travis for your repository: don't worry, it won't do anything.
+
+
 ### [.coveragerc](./.coveragerc)
 This file contains some configuration for `pytest-cov`.
 
@@ -57,7 +61,7 @@ For a basic plugin, you do not need to change anything in this file.
 
 
 ### [README.md](./README.md)
-Your module readme. It will be the package description on Pypi.org, and automatically be displayed in Github.
+Your module readme (this file). It will be the package description on Pypi.org, and automatically be displayed in Github.
 **Required Changes:**
 * Add all important info about your package here. What does your package do? How do you use it? What is your favorite color?
 

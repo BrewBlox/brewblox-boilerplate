@@ -31,11 +31,6 @@ def app_config() -> dict:
 @pytest.fixture
 def app(app_config):
     app_name = app_config['name']
-
-    # Check whether boilerplate was updated correctly
-    # Feel free to remove this line after doing so
-    assert app_name != 'YOUR_PACKAGE', 'Please change the package name from the default "YOUR_PACKAGE"'
-
     app = rest.create_app(app_config)
     # When we're testing, root path is one higher than it should be
     app.root_path = os.path.join(app.root_path, app_name)
