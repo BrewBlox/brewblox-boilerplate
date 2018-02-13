@@ -80,6 +80,11 @@ The directory in which the Flask plugin manager will be looking for your plugin.
 
 ### [test/conftest.py](./test/conftest.py)
 Project-level pytest fixtures. Some useful fixtures for testing any brewblox_service plugin are defined here. See tests in https://github.com/BrewBlox/brewblox-service/tree/develop/new/test for examples on how to use.
-The `app` fixture asserts that `YOUR_PACKAGE` was correctly replaced with a meaningful package name.
 
 For a basic plugin, you do not need to change anything in this file.
+
+
+### [test/test_boilerplate.py](./test/test_boilerplate.py)
+An example file on how to add pytest tests. By default, it just checks that you changed the package name from `YOUR_PACKAGE`.
+
+If you have changed the boilerplate values, you can remove this.
