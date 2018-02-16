@@ -5,7 +5,6 @@ Any fixtures declared here are available to all test functions in this directory
 
 import json
 import logging
-import os
 
 import pytest
 from brewblox_service import rest
@@ -22,20 +21,20 @@ def log_enabled():
 @pytest.fixture
 def app_config() -> dict:
     return {
-        'name': find_packages(exclude=['test'])[0],
+        'name': 'test_app',
+        'service_name': find_packages(exclude=['test'])[0],
         'prefix': '',
         'plugin_dir': 'plugins',
+        'port': 1234,
+        'gateway': 'http://gatewayaddr:1234',
     }
 
 
 @pytest.fixture
 def app(app_config):
-    app_name = app_config['name']
     app = rest.create_app(app_config)
-    # When we're testing, root path is one higher than it should be
-    app.root_path = os.path.join(app.root_path, app_name)
     # For the plugin mechanism, we need a valid app name
-    app.name = app_name
+    app.name = app_config['service_name']
     return app
 
 
