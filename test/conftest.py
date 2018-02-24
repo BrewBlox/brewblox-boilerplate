@@ -3,12 +3,12 @@ Master file for pytest fixtures.
 Any fixtures declared here are available to all test functions in this directory.
 """
 
-import json
+
 import logging
 
 import pytest
-from brewblox_service import rest
-from setuptools import find_packages
+
+from brewblox_service import service
 
 
 @pytest.fixture(scope='session', autouse=True)
@@ -22,32 +22,35 @@ def log_enabled():
 def app_config() -> dict:
     return {
         'name': 'test_app',
-        'service_name': find_packages(exclude=['test'])[0],
-        'prefix': '',
-        'plugin_dir': 'plugins',
+        'host': 'localhost',
         'port': 1234,
         'gateway': 'http://gatewayaddr:1234',
+        'debug': False,
     }
 
 
 @pytest.fixture
-def app(app_config):
-    app = rest.create_app(app_config)
-    # For the plugin mechanism, we need a valid app name
-    app.name = app_config['service_name']
+def sys_args(app_config) -> list:
+    return [
+        'app_name',
+        '--name', app_config['name'],
+        '--host', app_config['host'],
+        '--port', str(app_config['port']),
+        '--gateway', app_config['gateway'],
+    ]
+
+
+@pytest.fixture
+def app(sys_args):
+    args = service.parse_args(sys_args[1:])
+    app = service.create(args)
     return app
 
 
-@pytest.yield_fixture
-def client(client):
-    """Monkeypatch the Pytest-flask client to allow simple json post calls"""
+@pytest.fixture
+def client(app, aiohttp_client, loop):
+    """Allows patching the app or aiohttp_client before yielding it.
 
-    def jsonpost(*args, **kwargs):
-        if 'json' in kwargs:
-            kwargs['data'] = json.dumps(kwargs.pop('json'))
-            kwargs['content_type'] = 'application/json'
-        return client._post(*args, **kwargs)
-
-    client._post = client.post
-    client.post = jsonpost
-    yield client
+    Any tests wishing to add custom behavior to app can override the fixture
+    """
+    return loop.run_until_complete(aiohttp_client(app))

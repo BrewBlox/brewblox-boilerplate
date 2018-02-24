@@ -19,7 +19,6 @@ setup(
     ],
     keywords='brewing brewpi brewblox embedded plugin service',
     packages=find_packages(exclude=['test']),
-    package_data={package_name: ['plugins/*/info.json']},
     install_requires=[
         'brewblox-service'
     ],
