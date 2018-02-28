@@ -72,19 +72,11 @@ Your module. This directory name should match the `package_name` variable in `se
 * Rename to the desired module name. (Python import name. Can't include dashes "-").
 
 
-### [YOUR_PACKAGE/plugins/](./YOUR_PACKAGE/plugins)
-The directory in which the Flask plugin manager will be looking for your plugin. See https://flask-plugins.readthedocs.io/en/latest/ for more information.
-**Required Changes:**
-* Add your code here.
-
-
 ### [test/conftest.py](./test/conftest.py)
-Project-level pytest fixtures. Some useful fixtures for testing any brewblox_service plugin are defined here. See tests in https://github.com/BrewBlox/brewblox-service/tree/develop/new/test for examples on how to use.
+Project-level pytest fixtures. Some useful fixtures for testing any brewblox_service implementation are defined here. See tests in https://github.com/BrewBlox/brewblox-service/tree/develop/new/test for examples on how to use.
 
-For a basic plugin, you do not need to change anything in this file.
+For a basic implementation, you do not need to change anything in this file.
 
 
-### [test/test_boilerplate.py](./test/test_boilerplate.py)
-An example file on how to add pytest tests. By default, it just checks that you changed the package name from `YOUR_PACKAGE`.
-
-If you have changed the boilerplate values, you can remove this.
+### [test/test_hello.py](./test/test_hello.py)
+An example on how to test aiohttp endpoints you added. Feel free to remove this once you no longer need it.
