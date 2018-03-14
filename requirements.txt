@@ -1,1 +1,1 @@
-brewblox-service
+brewblox-service~=0.5

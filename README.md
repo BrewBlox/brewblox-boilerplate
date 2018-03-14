@@ -80,3 +80,21 @@ For a basic implementation, you do not need to change anything in this file.
 
 ### [test/test_hello.py](./test/test_hello.py)
 An example on how to test aiohttp endpoints you added. Feel free to remove this once you no longer need it.
+
+
+### [docker/Dockerfile](./docker/Dockerfile)
+A docker file for running your package. You can use a local version of your package by copying it to `docker/pkg/` before building.
+
+Example:
+```bash
+tox
+
+mkdir -p docker/pkg
+cp .tox/dist/* docker/pkg/
+
+docker build --tag your-package docker/
+docker run your-package
+```
+
+**Required Changes:**
+* Rename instances of `YOUR-PACKAGE` and `YOUR_PACKAGE` in the docker file to desired module and package names.
