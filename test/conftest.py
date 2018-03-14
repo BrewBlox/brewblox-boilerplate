@@ -24,7 +24,6 @@ def app_config() -> dict:
         'name': 'test_app',
         'host': 'localhost',
         'port': 1234,
-        'gateway': 'http://gatewayaddr:1234',
         'debug': False,
     }
 
@@ -36,14 +35,12 @@ def sys_args(app_config) -> list:
         '--name', app_config['name'],
         '--host', app_config['host'],
         '--port', str(app_config['port']),
-        '--gateway', app_config['gateway'],
     ]
 
 
 @pytest.fixture
 def app(sys_args):
-    args = service.parse_args(sys_args[1:])
-    app = service.create(args)
+    app = service.create_app('default', raw_args=sys_args[1:])
     return app
 
 

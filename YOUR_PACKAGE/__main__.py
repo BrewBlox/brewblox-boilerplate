@@ -119,14 +119,14 @@ def add_events(app):
 
 
 def main():
-    app = service.create()
+    app = service.create_app(default_name='YOUR_PACKAGE')
 
     add_events(app)
 
     # Register routes in this file (/example/endpoint in our case)
     app.router.add_routes(routes)
 
-    # Add all default endpoints, add prefix, and announce service to gateway
+    # Add all default endpoints, and adds prefix to all endpoints
     #
     # Default endpoints are:
     # {prefix}/api/doc (Swagger documentation of endpoints)
@@ -137,8 +137,8 @@ def main():
     #
     # See brewblox_service.service for more details on how arguments are parsed.
     #
-    # The default value is "brewblox".
-    # This means you can now access the example/endpoint as "/brewblox/example/endpoint"
+    # The default value is "YOUR_PACKAGE" (provided in service.create_app()).
+    # This means you can now access the example/endpoint as "/YOUR_PACKAGE/example/endpoint"
     service.furnish(app)
 
     # service.run() will start serving clients async

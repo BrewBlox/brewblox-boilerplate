@@ -20,7 +20,8 @@ setup(
     keywords='brewing brewpi brewblox embedded plugin service',
     packages=find_packages(exclude=['test']),
     install_requires=[
-        'brewblox-service'
+        'brewblox-service~=0.5'
     ],
+    python_requires='>=3.6',
     extras_require={'dev': ['tox']}
 )

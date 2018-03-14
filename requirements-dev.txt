@@ -1,7 +1,7 @@
-pytest-sugar
-pytest-flake8
-pytest-cov
-pytest-mock
-pytest-aiohttp
-asynctest
-aioresponses
+pytest-sugar==0.9.1
+pytest-flake8==0.9.1
+pytest-cov==2.5.1
+pytest-mock==1.6.3
+pytest-aiohttp==0.3.0
+asynctest==0.11.1
+aioresponses==0.4.0
