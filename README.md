@@ -33,14 +33,16 @@ This file kicks off automated testing and linting of your package. See http://to
 * The `--cov-fail-under=100` makes the build fail if code coverage is less than 100%. It is optional, but recommended. Remove the `#` comment character to enable it.
 
 
-### [requirements.txt](./requirements.txt)
-Include all runtime requirements for your package here. See https://pip.pypa.io/en/stable/reference/pip_install/#requirements-file-format for more information.
+### [Pipfile](./Pipfile)
+Lists all dependencies. Everything under [packages] is needed for the package to run, while everything under [dev-packages] is needed to run the tests.
+
+You can use `pipenv install <package name>` or `pipenv install --dev <package name>` to add dependencies.
 
 **Note:** There is overlap between your requirements file, and the `install_requires=[]` line in `setup.py`. For most cases, the rule of thumb is that if you need an external package to run, you should add it as dependency to both files.
 
-
-### [requirements-dev.txt](./requirements-dev.txt)
-The file works just like [requirements.txt](./requirements.txt), but should only list the packages needed to test the code. End users do not need these dependencies.
+**Required Changes:**
+* Install pipenv (run `sudo pip3 install pipenv`)
+* Generate a `Pipfile.lock` file (run `pipenv lock`)
 
 
 ### [MANIFEST.in](./MANIFEST.in)
