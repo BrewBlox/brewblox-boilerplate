@@ -1,12 +1,12 @@
-FROM python:3.6
+FROM brewblox/brewblox-service:latest
 
-# Bit of a trick: copy Dockerfile, and the "pkg" directory if it exists
-# This allows a conditional copy of ./pkg/*
 RUN mkdir -p /pkg
-COPY ./Dockerfile ./pkg*/* /pkg/
+COPY ./pkg/* /pkg/
 
 EXPOSE 5000
 
-RUN pip3 install -U YOUR-PACKAGE -f /pkg/
+RUN pip3 install /pkg/* || true \
+    && pip3 install YOUR-PACKAGE \
+    && pip3 show YOUR-PACKAGE
 
 ENTRYPOINT ["python3", "-m", "YOUR_PACKAGE"]

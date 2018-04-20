@@ -23,5 +23,5 @@ setup(
         'brewblox-service~=0.5'
     ],
     python_requires='>=3.6',
-    extras_require={'dev': ['tox']}
+    extras_require={'dev': ['tox', 'pipenv']}
 )
