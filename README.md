@@ -18,7 +18,7 @@ Used to create a distributable and installable Python package. See https://docs.
 
 **Required Changes:** 
 * Change the `project_name` variable to your project name. This is generally the same as the repository name. This name is used when installing the package through Pip.
-* Change the `package_name` variable to the module name. This can be the same name as your project name, but can't include dashes `-`. This name is used when importing your package in Python.
+* Change the `package_name` variable to the module name. This can be the same name as your project name, but can't include dashes (`-`). This name is used when importing your package in Python.
 * Check whether all other fields are correct. Refer to the documentation for more info.
 * Change the `url` parameter to the url of your repository.
 * Change the `author` parameter to your name.
@@ -64,18 +64,20 @@ For a basic plugin, you do not need to change anything in this file.
 
 ### [README.md](./README.md)
 Your module readme (this file). It will be the package description on Pypi.org, and automatically be displayed in Github.
+
 **Required Changes:**
 * Add all important info about your package here. What does your package do? How do you use it? What is your favorite color?
 
 
 ### [YOUR_PACKAGE/](./YOUR_PACKAGE/)
 Your module. This directory name should match the `package_name` variable in `setup.py`.
+
 **Required Changes:**
-* Rename to the desired module name. (Python import name. Can't include dashes "-").
+* Rename to the desired module name. (Python import name. Can't include dashes (`-`)).
 
 
 ### [test/conftest.py](./test/conftest.py)
-Project-level pytest fixtures. Some useful fixtures for testing any brewblox_service implementation are defined here. See tests in https://github.com/BrewBlox/brewblox-service/tree/develop/new/test for examples on how to use.
+Project-level pytest fixtures. Some useful fixtures for testing any brewblox_service implementation are defined here. See tests in https://github.com/BrewBlox/brewblox-service/tree/develop/test for examples on how to use.
 
 For a basic implementation, you do not need to change anything in this file.
 
@@ -92,6 +94,7 @@ Example:
 tox
 
 mkdir -p docker/pkg
+rm docker/pkg/*
 cp .tox/dist/* docker/pkg/
 
 docker build --tag your-package docker/
