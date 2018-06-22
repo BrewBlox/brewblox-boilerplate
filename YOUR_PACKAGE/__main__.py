@@ -2,19 +2,17 @@
 Example of how to import and use the brewblox service
 """
 
-import logging
-from typing import Type
+from typing import Union
 
 from aiohttp import web
-
-from brewblox_service import events, service
+from brewblox_service import brewblox_logger, events, service
 
 routes = web.RouteTableDef()
-LOGGER = logging.getLogger(__name__)
+LOGGER = brewblox_logger(__name__)
 
 
 @routes.post('/example/endpoint')
-async def example_endpoint_handler(request: Type[web.Request]):
+async def example_endpoint_handler(request: web.Request) -> web.Response:
     """
     Example endpoint handler. Using `routes.post` means it will only respond to POST requests.
 
@@ -45,7 +43,7 @@ async def example_endpoint_handler(request: Type[web.Request]):
     return web.Response(body=f'Hello world! (You said: "{input}")')
 
 
-async def on_message(subscription, key, message):
+async def on_message(subscription: events.EventSubscription, key: str, message: Union[dict, str]):
     """Example message handler for RabbitMQ events.
 
     Services can choose to publish / subscribe events to communicate between them.
@@ -69,7 +67,7 @@ async def on_message(subscription, key, message):
     LOGGER.info(f'Message from {subscription}: {key} = {message} ({type(message)})')
 
 
-def add_events(app):
+def add_events(app: web.Application):
     """Add event handling
 
     Subscriptions can be made at any time using `EventListener.subscribe()`.
