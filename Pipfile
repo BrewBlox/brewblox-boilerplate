@@ -7,7 +7,7 @@ name = "pypi"
 
 [packages]
 
-brewblox-service = "*"
+brewblox-service = "~=0.10"
 
 
 [dev-packages]

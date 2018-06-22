@@ -42,7 +42,7 @@ You can use `pipenv install <package name>` or `pipenv install --dev <package na
 
 **Required Changes:**
 * Install pipenv (run `sudo pip3 install pipenv`)
-* Generate a `Pipfile.lock` file (run `pipenv lock`)
+* Update the `Pipfile.lock` file (run `pipenv lock`)
 
 
 ### [MANIFEST.in](./MANIFEST.in)
