@@ -86,20 +86,57 @@ For a basic implementation, you do not need to change anything in this file.
 An example on how to test aiohttp endpoints you added. Feel free to remove this once you no longer need it.
 
 
-### [docker/Dockerfile](./docker/Dockerfile)
-A docker file for running your package. You can use a local version of your package by copying it to `docker/pkg/` before building.
+### [docker/amd/Dockerfile](./docker/amd/Dockerfile)
+A docker file for running your package. To build, you need to copy the local version of your python package to `docker/dist/` first.
+
+The Dockerfiles are set up so both the AMD (desktop) and ARM variants can use the same input files.
 
 Example:
 ```bash
 tox
 
-mkdir -p docker/pkg
-rm docker/pkg/*
-cp .tox/dist/* docker/pkg/
+rm docker/dist/*
+cp .tox/dist/* docker/dist/
 
-docker build --tag your-package docker/
-docker run your-package
+docker build \
+    --tag your-package:your-version \
+    --file docker/amd/Dockerfile \
+    docker/
+
+# run it
+docker run your-package:your-version
 ```
+
+**Required Changes:**
+* Rename instances of `YOUR-PACKAGE` and `YOUR_PACKAGE` in the docker file to desired module and package names.
+
+
+### [docker/arm/Dockerfile](./docker/arm/Dockerfile)
+The same as for `docker/amd/Dockerfile`, but for Raspberry Pi targets.
+
+In order to build for Raspberry, you must also first enable the ARM compiler.
+
+Example:
+```bash
+tox
+
+rm docker/dist/*
+cp .tox/dist/* docker/dist/
+
+# Enable ARM compiler
+docker run --rm --privileged multiarch/qemu-user-static:register --reset
+
+# Build the Raspberry Pi version
+docker build \
+    --tag your-package:rpi-your-version \
+    --file docker/arm/Dockerfile \
+    docker/
+
+# Try to run Raspberry version
+# On the desktop, this will fail with "standard_init_linux.go:190: exec user process caused "exec format error""
+docker run --detach your-package:rpi-your-version
+```
+
 
 **Required Changes:**
 * Rename instances of `YOUR-PACKAGE` and `YOUR_PACKAGE` in the docker file to desired module and package names.
