@@ -5,7 +5,7 @@ Example of how to import and use the brewblox service
 from typing import Union
 
 from aiohttp import web
-from brewblox_service import brewblox_logger, events, service
+from brewblox_service import brewblox_logger, events, scheduler, service
 
 routes = web.RouteTableDef()
 LOGGER = brewblox_logger(__name__)
@@ -103,6 +103,10 @@ def add_events(app: web.Application):
     For more information on this, see https://www.rabbitmq.com/tutorials/tutorial-four-python.html
     and https://www.rabbitmq.com/tutorials/tutorial-five-python.html
     """
+
+    # Enable the task scheduler
+    # This is required for the `events` feature
+    scheduler.setup(app)
 
     # Enable event handling
     # Event subscription / publishing will be enabled after you call this function
