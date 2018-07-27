@@ -1,10 +1,13 @@
 FROM brewblox/brewblox-service:latest
 
-EXPOSE 5000
 WORKDIR /app
 
 COPY ./dist /app/dist
-RUN pip3 install /app/dist/*
-RUN pip3 show YOUR-PACKAGE
+COPY ./config /app/config
+
+EXPOSE 5000
+
+RUN pip3 install /app/dist/* \
+    && pip3 show YOUR-PACKAGE
 
 ENTRYPOINT ["python3", "-m", "YOUR_PACKAGE"]

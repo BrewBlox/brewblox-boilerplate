@@ -16,6 +16,7 @@ asynctest = "*"
 aioresponses = "*"
 "flake8" = "*"
 "autopep8" = "*"
+brewblox-tools = "*"
 
 [requires]
 python_version = "3.6"
