@@ -5,7 +5,7 @@ COPY ./dist /app/dist
 RUN pip3 install wheel \
     && pip3 wheel /app/dist/* --wheel-dir=/wheeley --find-links=/wheeley
 
-FROM resin/raspberrypi3-python:3.6-slim
+FROM brewblox/rpi-python:3.7-slim
 EXPOSE 5000
 WORKDIR /app
 

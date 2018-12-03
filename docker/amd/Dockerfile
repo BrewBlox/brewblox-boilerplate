@@ -5,7 +5,7 @@ COPY ./dist /build/dist
 RUN pip3 install wheel \
     && pip3 wheel /build/dist/* --wheel-dir=/wheeley --find-links=/wheeley
 
-FROM python:3.6-slim
+FROM python:3.7-slim
 EXPOSE 5000
 WORKDIR /app
 
