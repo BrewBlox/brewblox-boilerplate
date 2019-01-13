@@ -9,7 +9,7 @@ services:
 install:
   - source .env
   - pip install pipenv
-  - pipenv install --dev
+  - pipenv sync --dev
 
 script:
   - pytest
@@ -39,6 +39,7 @@ before_deploy:
   python setup.py sdist;
   bbt-distcopy dist/ docker/dist/;
   bbt-distcopy config/ docker/config/;
+  pipenv lock --requirements > docker/requirements.txt;
   docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD};
   docker run --rm --privileged multiarch/qemu-user-static:register --reset;
 
