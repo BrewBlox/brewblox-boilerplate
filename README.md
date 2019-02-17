@@ -116,6 +116,7 @@ python3 setup.py sdist
 
 rm docker/dist/*
 cp dist/* docker/dist/
+pipenv lock --requirements > docker/requirements.txt
 
 docker build \
     --tag your-package:your-version \
@@ -125,6 +126,17 @@ docker build \
 # run it
 docker run your-package:your-version
 ```
+
+To cover the most common use cases, the `brewblox-tools` dependency defines the `bbt-localbuild` script.
+
+It will read your .env file, run sdist, copy configuration to the docker directory, and build an image. Example:
+
+```bash
+bbt-localbuild
+docker run your-package:local
+```
+
+Explore its other arguments with `bbt-localbuild --help`
 
 **Required Changes:**
 * Rename instances of `YOUR-PACKAGE` and `YOUR_PACKAGE` in the docker file to desired project and package names.
@@ -142,6 +154,7 @@ python3 setup.py sdist
 
 rm docker/dist/*
 cp dist/* docker/dist/
+pipenv lock --requirements > docker/requirements.txt
 
 # Enable ARM compiler
 docker run --rm --privileged multiarch/qemu-user-static:register --reset
@@ -155,6 +168,13 @@ docker build \
 # Try to run Raspberry version
 # On the desktop, this will fail with "standard_init_linux.go:190: exec user process caused "exec format error""
 docker run --detach your-package:rpi-your-version
+```
+
+`bbt-localbuild` can also generate ARM images. It will automatically enable the QEMU compiler, and prefix the tag with `rpi-`. To use:
+
+```
+bbt-localbuild --arch arm
+docker run your-package:rpi-local
 ```
 
 **Required Changes:**

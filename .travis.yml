@@ -36,30 +36,16 @@ script:
 
 
 before_deploy:
-  python setup.py sdist;
-  bbt-distcopy dist/ docker/dist/;
-  bbt-distcopy config/ docker/config/;
-  pipenv lock --requirements > docker/requirements.txt;
   docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD};
-  docker run --rm --privileged multiarch/qemu-user-static:register --reset;
 
 deploy:
   # Deploy "newest-tag" and version tag to Docker Hub on tagged commits
   - provider: script
     script:
-      bbt-deploy-docker
-      --no-cache
-      --context docker
-      --file amd/Dockerfile
-      --name ${DOCKER_REPO}
+      bbt-localbuild
+      --arch amd arm
       --tags newest-tag $(git describe --tags)
-      &&
-      bbt-deploy-docker
-      --no-cache
-      --context docker
-      --file arm/Dockerfile
-      --name ${DOCKER_REPO}
-      --tags rpi-newest-tag rpi-$(git describe --tags)
+      --push
     skip_cleanup: true
     on:
       tags: true
@@ -67,19 +53,10 @@ deploy:
   # Deploy branch to Docker Hub on any push to the GitHub repository (but not forks)
   - provider: script
     script:
-      bbt-deploy-docker
-      --no-cache
-      --context docker
-      --file amd/Dockerfile
-      --name ${DOCKER_REPO}
-      --tags ${TRAVIS_BRANCH}
-      &&
-      bbt-deploy-docker
-      --no-cache
-      --context docker
-      --file arm/Dockerfile
-      --name ${DOCKER_REPO}
-      --tags rpi-${TRAVIS_BRANCH}
+      bbt-localbuild
+      --arch amd arm
+      --branch-tag
+      --push
     skip_cleanup: true
     on:
       tags: false
