@@ -116,6 +116,7 @@ python3 setup.py sdist
 
 rm docker/dist/*
 cp dist/* docker/dist/
+pipenv lock --requirements > docker/requirements.txt
 
 docker build \
     --tag your-package:your-version \
@@ -153,6 +154,7 @@ python3 setup.py sdist
 
 rm docker/dist/*
 cp dist/* docker/dist/
+pipenv lock --requirements > docker/requirements.txt
 
 # Enable ARM compiler
 docker run --rm --privileged multiarch/qemu-user-static:register --reset
