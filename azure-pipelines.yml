@@ -1,0 +1,61 @@
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+variables:
+  # Variables imported from brewblox group:
+  # DOCKER_USER
+  # DOCKER_PASSWORD
+  # PYPI_USER
+  # PYPI_PASSWORD
+  - group: brewblox
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    addToPath: true
+    versionSpec: '3.7'
+    architecture: 'x64'
+
+- bash: |
+    BRANCH=$(echo $(Build.SourceBranch) | grep -oP "^refs/heads/\K.*")
+    TAG=$(git describe --tags | grep "^[[:digit:]]*\.[[:digit:]]*\.[[:digit:]]$")
+    echo "##vso[task.setvariable variable=brewblox.branch]$BRANCH"
+    echo "##vso[task.setvariable variable=brewblox.tag]$TAG"
+  displayName: export build variables
+
+- bash: |
+    pip install pipenv
+    pipenv install --system --dev --deploy
+    pytest
+  displayName: Run Pytest
+
+- bash: |
+    echo $(DOCKER_PASSWORD) | docker login -u $(DOCKER_USER) --password-stdin
+  displayName: Docker login
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+
+- bash: >
+    bbt-localbuild
+    --arch amd arm
+    --tags newest-tag $(brewblox.tag)
+    --push
+  displayName: Deploy newest-tag and version tag to Docker Hub on tagged commits
+  condition: and(succeeded(), variables['brewblox.tag'])
+
+- bash: >
+    bbt-localbuild
+    --arch amd arm
+    --branch-tag
+    --push
+  displayName: Deploy branch to Docker Hub on any push to the GitHub repository
+  condition: and(succeeded(), variables['brewblox.branch'], not(variables['brewblox.tag']))
+  env:
+  # brewblox-tools looks for $TRAVIS_BRANCH to determine branch tag
+    TRAVIS_BRANCH: $(brewblox.branch)
+
+- bash: |
+    pip install twine
+    python setup.py sdist
+    twine upload -u $(PYPI_USER) -p $(PYPI_PASSWORD) --skip-existing dist/*
+  displayName: Deploy to PyPi
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
