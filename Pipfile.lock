@@ -72,10 +72,10 @@
         },
         "brewblox-service": {
             "hashes": [
-                "sha256:6f6220b90b1b54ab9cf3a27782ce0d79998f538e1ef5cd44d24b8898653374d6"
+                "sha256:0a7c17baad0dfce87743b9e571950a19005c9764cda5e243bef5949e236fd2e8"
             ],
             "index": "pypi",
-            "version": "==0.15.4"
+            "version": "==0.16.0"
         },
         "cchardet": {
             "hashes": [
@@ -277,11 +277,11 @@
         },
         "asynctest": {
             "hashes": [
-                "sha256:bbeb45bb41344d2cbb814b4c89c04f2c568742352736cabf7af6fcbed06f66cc",
-                "sha256:cce5f4c64a24bd05a31721e45fd9fe39ff0a9987d7a1351d00b1037a8744238a"
+                "sha256:ade427a711d18016f35fb0c5d412f0ed63fb074a6084b67ff2dad48f50b0d6ca",
+                "sha256:b29ee07019088f6f33fd7ab6826308bbd7ea8bc16ba2f0aa0f70551e70054935"
             ],
             "index": "pypi",
-            "version": "==0.12.3"
+            "version": "==0.12.4"
         },
         "atomicwrites": {
             "hashes": [
@@ -306,10 +306,10 @@
         },
         "brewblox-tools": {
             "hashes": [
-                "sha256:e84c411d4410f0b3d4f5cbd87c43147523769cc543dd10368baa5ca68b65eb6e"
+                "sha256:f7e579a2f1d1eca5aae2284d181422636b00682ce0cd9a900c75204460235638"
             ],
             "index": "pypi",
-            "version": "==0.6.2"
+            "version": "==0.7.0"
         },
         "certifi": {
             "hashes": [

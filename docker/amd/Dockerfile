@@ -12,6 +12,9 @@ FROM python:3.7-slim
 EXPOSE 5000
 WORKDIR /app
 
+ARG service_info=UNKNOWN
+ENV SERVICE_INFO=${service_info}
+
 COPY --from=base /wheeley /wheeley
 COPY ./config /app/config
 
