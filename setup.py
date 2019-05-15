@@ -4,6 +4,7 @@ setup(
     name='YOUR-PROJECT',
     version='0.1',
     long_description=open('README.md').read(),
+    long_description_content_type='text/markdown',
     url='YOUR_REPOSITORY',
     author='YOUR NAME',
     author_email='YOU@PROVIDER.com',
