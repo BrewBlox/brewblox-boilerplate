@@ -38,8 +38,7 @@ Developer tools such as [Tox](http://tox.readthedocs.io/en/latest/index.html), [
 ### [.env](./.env)
 Project-specific environment variables can be stored here. `Pipenv` will automatically load it when executing a command in `pipenv run`.
 
-For a basic service (not deployed to PyPi or Docker Hub), you do not need to add or edit anything here.
-
+By default, the names of the Docker and Github repositories are stored here. They are read during the CI build.
 
 ---
 ### [Pipfile](./Pipfile)
@@ -183,6 +182,6 @@ docker run your-package:rpi-local
 
 ---
 ### [azure-pipelines.yml](./azure-pipelines.yml)
-[Azure](https://dev.azure.com) can automatically test and deploy all commits you push to GitHub. If you haven't enabled travis for your repository: don't worry, it won't do anything.
+[Azure](https://dev.azure.com) can automatically test and deploy all commits you push to GitHub. If you haven't enabled Azure Pipelines for your repository: don't worry, it won't do anything.
 
 To deploy your software, you will also need [PyPi](https://pypi.org/) and [Docker Hub](https://hub.docker.com/) accounts.
