@@ -2,131 +2,64 @@
 Example of how to import and use the brewblox service
 """
 
-from typing import Union
+from argparse import ArgumentParser
 
-from aiohttp import web
-from brewblox_service import brewblox_logger, events, scheduler, service
+from brewblox_service import (brewblox_logger, events, http_client, scheduler,
+                              service)
 
-routes = web.RouteTableDef()
+from YOUR_PACKAGE import events_example, http_example, poll_example
+
 LOGGER = brewblox_logger(__name__)
 
 
-@routes.post('/example/endpoint')
-async def example_endpoint_handler(request: web.Request) -> web.Response:
-    """
-    Example endpoint handler. Using `routes.post` means it will only respond to POST requests.
+def create_parser(default_name='YOUR_PACKAGE') -> ArgumentParser:
+    # brewblox-service has some default arguments
+    # We can add more arguments here before sending the parser back to brewblox-service
+    # The parsed values for all arguments are placed in app['config']
+    # For documentation see https://docs.python.org/3/library/argparse.html
+    parser: ArgumentParser = service.create_parser(default_name=default_name)
 
-    When trying it out, it will echo whatever you send.
+    # This argument will be used by poll_example
+    # After the service started, you can get the value in
+    # app['config']['broadcast_exchange']
+    parser.add_argument('--poll-exchange',
+                        help='RabbitMQ eventbus exchange. [%(default)s]',
+                        default='brewcast')
 
-    Each aiohttp endpoint should take a request as argument, and return a response.
-    You can add Swagger documentation in this docstring, or by adding a yaml file.
-    See http://aiohttp-swagger.readthedocs.io/en/latest/ for more details
+    # This will also be used by poll_example
+    # Note how we specify the type as float
+    parser.add_argument('--poll-interval',
+                        help='Interval (in seconds) between polling. [%(default)s]',
+                        type=float,
+                        default=5)
 
-    ---
-    tags:
-    - Example
-    summary: Example endpoint.
-    description: An example of how to use aiohttp features.
-    operationId: example.endpoint
-    produces:
-    - text/plain
-    parameters:
-    -
-        in: body
-        name: body
-        description: Input message
-        required: false
-        schema:
-            type: string
-    """
-    input = await request.text()
-    return web.Response(body=f'Hello world! (You said: "{input}")')
+    return parser
 
 
-async def on_message(subscription: events.EventSubscription, key: str, message: Union[dict, str]):
-    """Example message handler for RabbitMQ events.
+def main():
 
-    Services can choose to publish / subscribe events to communicate between them.
-    These events are for loose communication: you broadcast something,
-    and don't really care by whom it gets picked up.
-
-    When subscribing to an event, you provide a callback (example: this function)
-    that will be called every time a relevant event is published.
-
-    Args:
-        subscription (events.EventSubscription):
-            The subscription that triggered this callback.
-
-        key (str): The routing key of the published event.
-            This will always be specific - no wildcards.
-
-        message (dict | str): The content of the event.
-            If it was a JSON message, this is a dict. String otherwise.
-
-    """
-    LOGGER.info(f'Message from {subscription}: {key} = {message} ({type(message)})')
-
-
-def add_events(app: web.Application):
-    """Add event handling
-
-    Subscriptions can be made at any time using `EventListener.subscribe()`.
-    They will be declared on the remote amqp server whenever the listener is connected.
-
-    Message interest can be specified by setting exchange name, and routing key.
-
-    For `direct` and `fanout` exchanges, messages must match routing key exactly.
-    For `topic` exchanges (the default), routing keys can be multiple values, separated with dots (.).
-    Routing keys can use regex and wildcards.
-
-    The simple wildcards are `*` and `#`.
-
-    `*` matches a single level.
-
-    "controller.*.sensor" subscriptions will receive (example) routing keys:
-    - controller.block.sensor
-    - controller.container.sensor
-
-    But not:
-    - controller
-    - controller.nested.block.sensor
-    - controller.block.sensor.nested
-
-    `#` is a greedier wildcard: it will match as few or as many values as it can
-    Plain # subscriptions will receive all messages published to that exchange.
-
-    A subscription of "controller.#" will receive:
-    - controller
-    - controller.block.sensor
-    - controller.container.nested.sensor
-
-    For more information on this, see https://www.rabbitmq.com/tutorials/tutorial-four-python.html
-    and https://www.rabbitmq.com/tutorials/tutorial-five-python.html
-    """
+    app = service.create_app(parser=create_parser())
 
     # Enable the task scheduler
-    # This is required for the `events` feature
+    # This is required for the `events` feature,
+    # and for the RepeaterFeature used in poll_example
     scheduler.setup(app)
 
     # Enable event handling
     # Event subscription / publishing will be enabled after you call this function
     events.setup(app)
 
-    # Get the standard event listener
-    # This can be used to register as many subscriptions as you want
-    listener = events.get_listener(app)
+    # Enable making HTTP requests
+    # This allows you to access a shared aiohttp ClientSession
+    # https://docs.aiohttp.org/en/stable/client_reference.html
+    http_client.setup(app)
 
-    # Subscribe to all events on 'brewblox' exchange
-    listener.subscribe('brewblox', '#', on_message=on_message)
-
-
-def main():
-    app = service.create_app(default_name='YOUR_PACKAGE')
-
-    add_events(app)
-
-    # Register routes in this file (/example/endpoint in our case)
-    app.router.add_routes(routes)
+    # To keep everything consistent, examples also have the setup() function
+    # In here they register everything that must be done before the service starts
+    # It's not required to use this pattern, but it makes code easier to understand
+    events_example.setup(app)
+    poll_example.setup(app)
+    http_example.setup(app)
 
     # Add all default endpoints, and adds prefix to all endpoints
     #
