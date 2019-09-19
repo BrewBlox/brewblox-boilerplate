@@ -4,12 +4,12 @@ Checks whether we can call the hello endpoint.
 
 import pytest
 
-import YOUR_PACKAGE.__main__ as main
+from YOUR_PACKAGE import http_example
 
 
 @pytest.fixture
 async def app(app):
-    app.router.add_routes(main.routes)
+    http_example.setup(app)
     return app
 
 

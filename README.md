@@ -83,23 +83,32 @@ Your module readme (this file). It will be the package description on Pypi.org, 
 
 ---
 ### [YOUR_PACKAGE/](./YOUR_PACKAGE/)
-Your module. This name is used when importing your code in Python.
+[\_\_main\_\_.py](./YOUR_PACKAGE/__main__.py),
+[events_example.py](./YOUR_PACKAGE/events_example.py),
+[http_example.py](./YOUR_PACKAGE/http_example.py),
+[poll_example.py](./YOUR_PACKAGE/poll_example.py)
+
+Your module. The directory name is used when importing your code in Python.
+
+You can find examples for common service actions here.
 
 **Required Changes:**
 * Rename to the desired module name. This name can't include "`-`" characters. </br>
 It is common for single-module projects to use "`-`" as a separator for the project name, and "`_`" for the module. </br>
 For example: `your-package` and `your_package`.
-
+* Change the import statements in .py files from `YOUR_PACKAGE` to your package name.
 
 ---
 ### [test/conftest.py](./test/conftest.py)
 Project-level pytest fixtures. Some useful fixtures for testing any brewblox_service implementation are defined here. See tests in https://github.com/BrewBlox/brewblox-service/tree/develop/test for examples on how to use.
 
-For a basic implementation, you do not need to change anything in this file.
+
+**Required Changes:**
+* Change the import from `YOUR_PACKAGE` to your package name.
 
 
 ---
-### [test/test_hello.py](./test/test_hello.py)
+### [test/test_http_example.py](./test/test_http_example.py)
 An example on how to test aiohttp endpoints you added. Feel free to remove this once you no longer need it.
 
 
