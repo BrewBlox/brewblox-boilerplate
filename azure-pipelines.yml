@@ -1,6 +1,14 @@
 pool:
   vmImage: 'Ubuntu-16.04'
 
+trigger:
+  tags:
+    include:
+      - "*"
+  branches:
+    include:
+      - refs/heads/*
+
 variables:
   # Variables imported from brewblox group:
   # DOCKER_USER
@@ -35,16 +43,16 @@ steps:
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
 - bash: >
-    bbt-localbuild
-    --arch amd arm
-    --tags newest-tag $(brewblox.tag)
+    brewblox-dev localbuild
+    --arch amd --arch arm
+    --tag newest-tag --tag $(brewblox.tag)
     --push
   displayName: Deploy newest-tag and version tag to Docker Hub on tagged commits
   condition: and(succeeded(), variables['brewblox.tag'])
 
 - bash: >
-    bbt-localbuild
-    --arch amd arm
+    brewblox-dev localbuild
+    --arch amd --arch arm
     --branch-tag
     --push
   displayName: Deploy branch to Docker Hub on any push to the GitHub repository

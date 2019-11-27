@@ -135,16 +135,16 @@ docker build \
 docker run your-package:your-version
 ```
 
-To cover the most common use cases, the `brewblox-tools` dependency defines the `bbt-localbuild` script.
+To cover the most common use cases, the `brewblox-dev` CLI tool has the `localbuild` function.
 
 It will read your .env file, run sdist, copy configuration to the docker directory, and build an image. Example:
 
 ```bash
-bbt-localbuild
+brewblox-dev localbuild
 docker run your-package:local
 ```
 
-Explore its other arguments with `bbt-localbuild --help`
+Explore its other arguments with `brewblox-dev --help`
 
 **Required Changes:**
 * Rename instances of `YOUR-PACKAGE` and `YOUR_PACKAGE` in the docker file to desired project and package names.
@@ -178,10 +178,10 @@ docker build \
 docker run --detach your-package:rpi-your-version
 ```
 
-`bbt-localbuild` can also generate ARM images. It will automatically enable the QEMU compiler, and prefix the tag with `rpi-`. To use:
+`brewblox-dev localbuild` can also generate ARM images. It will automatically enable the QEMU compiler, and prefix the tag with `rpi-`. To use:
 
 ```
-bbt-localbuild --arch arm
+brewblox-dev localbuild --arch arm
 docker run your-package:rpi-local
 ```
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Automatically executed by bbt-localbuild
+# Automatically executed by brewblox-dev localbuild
 # You can use this file to setup the docker build
 # Example: copy config files into the build context, where the Dockerfile can access them
 
