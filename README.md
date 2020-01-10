@@ -27,7 +27,7 @@ Used to create a distributable and installable Python package. See https://docs.
 
 ---
 ### [tox.ini](./tox.ini)
-Developer tools such as [Tox](http://tox.readthedocs.io/en/latest/index.html), [Pytest](https://docs.pytest.org/en/latest/), [Flake8](http://flake8.pycqa.org/en/latest/), and [Autopep8](https://github.com/hhatto/autopep8) use this file to find configuration options.
+Developer tools such as [Pytest](https://docs.pytest.org/en/latest/), [Flake8](http://flake8.pycqa.org/en/latest/), and [Autopep8](https://github.com/hhatto/autopep8) use this file to find configuration options.
 
 **Required Changes:**
 * Change `--cov=YOUR_PACKAGE` to refer to your module name.
@@ -39,6 +39,11 @@ Developer tools such as [Tox](http://tox.readthedocs.io/en/latest/index.html), [
 Project-specific environment variables can be stored here. `Pipenv` will automatically load it when executing a command in `pipenv run`.
 
 By default, the names of the Docker and Github repositories are stored here. They are read during the CI build.
+
+**Required Changes:**
+* Change `DOCKER_REPO=you/your-package` to match the name of your docker image.
+* Change `GITHUB_REPO=you/YOUR-PACKAGE` to match the name of your github repository.
+
 
 ---
 ### [Pipfile](./Pipfile)
