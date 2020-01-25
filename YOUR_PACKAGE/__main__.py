@@ -21,10 +21,10 @@ def create_parser(default_name='YOUR_PACKAGE') -> ArgumentParser:
 
     # This argument will be used by poll_example
     # After the service started, you can get the value in
-    # app['config']['broadcast_exchange']
-    parser.add_argument('--poll-exchange',
+    # app['config']['history_exchange']
+    parser.add_argument('--history-exchange',
                         help='RabbitMQ eventbus exchange. [%(default)s]',
-                        default='brewcast')
+                        default='brewcast.history')
 
     # This will also be used by poll_example
     # Note how we specify the type as float

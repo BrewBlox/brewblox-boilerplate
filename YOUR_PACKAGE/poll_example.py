@@ -33,10 +33,10 @@ class PollingFeature(repeater.RepeaterFeature):
 
         # Get values from config
         # Name is added by the brewblox-service arguments
-        # poll_interval and poll_exchange are added in __main__.create_parser()
+        # poll_interval and history_exchange are added in __main__.create_parser()
         self.name = self.app['config']['name']
         self.interval = self.app['config']['poll_interval']
-        self.exchange = self.app['config']['poll_exchange']
+        self.exchange = self.app['config']['history_exchange']
 
         # You can prematurely exit here.
         # Raise RepeaterCancelled(), and the base class will stop without a fuss.

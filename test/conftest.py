@@ -28,7 +28,7 @@ def app_config() -> dict:
         'port': 1234,
         'debug': False,
         'poll_interval': 5,
-        'poll_exchange': 'brewcast',
+        'history_exchange': 'brewcast.history',
     }
 
 
@@ -40,7 +40,7 @@ def sys_args(app_config) -> list:
         '--host', app_config['host'],
         '--port', app_config['port'],
         '--poll-interval', app_config['poll_interval'],
-        '--poll-exchange', app_config['poll_exchange'],
+        '--history-exchange', app_config['history_exchange'],
     ]]
 
 
