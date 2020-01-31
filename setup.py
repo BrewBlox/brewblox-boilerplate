@@ -11,7 +11,7 @@ setup(
     classifiers=[
         'Development Status :: 4 - Beta',
         'License :: OSI Approved :: GNU General Public License (GPL)',
-        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Intended Audience :: End Users/Desktop',
         'Topic :: System :: Hardware',
     ],
@@ -20,6 +20,6 @@ setup(
     install_requires=[
         'brewblox-service'
     ],
-    python_requires='>=3.7',
+    python_requires='>=3.8',
     extras_require={'dev': ['pipenv']}
 )
