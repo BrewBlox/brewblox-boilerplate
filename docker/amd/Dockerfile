@@ -8,7 +8,7 @@ RUN pip3 install wheel \
     && pip3 wheel --wheel-dir=/wheeley --find-links=/wheeley-base -r /app/requirements.txt \
     && pip3 wheel --wheel-dir=/wheeley --find-links=/wheeley --no-index /app/dist/*
 
-FROM python:3.7-slim
+FROM python:3.8-slim
 EXPOSE 5000
 WORKDIR /app
 

@@ -6,6 +6,9 @@ Everything listed under **Required Changes** must be done before the package wor
 
 ## How to use
 
+* Make sure Python3.8 is installed
+  * `sudo add-apt-repository ppa:deadsnakes/ppa`
+  * `sudo apt install python3.8 python3.8-dev`
 * Fork this repository to your own Github account or project.
 * Follow all steps outlined under the various **Required Changes**.
 * Start coding your service =)
@@ -16,7 +19,7 @@ Everything listed under **Required Changes** must be done before the package wor
 
 ---
 ### [setup.py](./setup.py)
-Used to create a distributable and installable Python package. See https://docs.python.org/3.6/distutils/setupscript.html for more information.
+Used to create a distributable and installable Python package. See https://docs.python.org/3.8/distutils/setupscript.html for more information.
 
 **Required Changes:**
 * Change the `name` variable to your project name. This is generally the same as the repository name. This name is used when installing the package through Pip. </br> It is common for this name to equal the package name, but using "`-`" as separator instead of "`_`".
@@ -64,7 +67,7 @@ You can use `pipenv install <package name>` or `pipenv install --dev <package na
 ---
 ### [MANIFEST.in](./MANIFEST.in)
 This file lists all non-code files that should be part of the package.
-See https://docs.python.org/3.6/distutils/sourcedist.html#specifying-the-files-to-distribute for more info.
+See https://docs.python.org/3.8/distutils/sourcedist.html#specifying-the-files-to-distribute for more info.
 
 For a basic service, you do not need to change anything in this file.
 
