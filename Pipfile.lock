@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "105e9e33e5ef3c94a103ebe31d4ce759703478906dd509dbd16f1dbc1dbe70b2"
+            "sha256": "b8fa21a19cdbdcd928739d0c89e953f67379cc7997ff9ed629f936e52feff533"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -62,10 +62,10 @@
         },
         "brewblox-service": {
             "hashes": [
-                "sha256:da8865cd0972617b1ca719a1f3184af8feefb23904093ec2d356f284733493bc"
+                "sha256:6b827a75bf72122792ea8f624334b873a64cc7f680a9d3a80bb91a7385ecfa9c"
             ],
             "index": "pypi",
-            "version": "==0.21.0"
+            "version": "==0.21.1"
         },
         "cchardet": {
             "hashes": [
@@ -277,10 +277,10 @@
         },
         "brewblox-dev": {
             "hashes": [
-                "sha256:327ed60ad92d55a62b3c1151fffe9bae8aab82cb0de26c5736b95b12d4756041"
+                "sha256:d2b2f4805eafa68f5682fafd0885c503cb9bb7862e31bf2d6b024ae23e128e20"
             ],
             "index": "pypi",
-            "version": "==1.1.0"
+            "version": "==1.2.0"
         },
         "chardet": {
             "hashes": [
@@ -482,10 +482,10 @@
         },
         "python-dotenv": {
             "hashes": [
-                "sha256:440c7c23d53b7d352f9c94d6f70860242c2f071cf5c029dd661ccb22d64ae42b",
-                "sha256:f254bfd0c970d64ccbb6c9ebef3667ab301a71473569c991253a481f1c98dddc"
+                "sha256:8429f459fc041237d98c9ff32e1938e7e5535b5ff24388876315a098027c3a57",
+                "sha256:ca9f3debf2262170d6f46571ce4d6ca1add60bb93b69c3a29dcb3d1a00a65c93"
             ],
-            "version": "==0.10.5"
+            "version": "==0.11.0"
         },
         "six": {
             "hashes": [
