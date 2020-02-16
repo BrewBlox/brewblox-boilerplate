@@ -4,9 +4,7 @@ Example of how to import and use the brewblox service
 
 from argparse import ArgumentParser
 
-from brewblox_service import (brewblox_logger, events, http_client, scheduler,
-                              service)
-
+from brewblox_service import brewblox_logger, events, http, scheduler, service
 from YOUR_PACKAGE import events_example, http_example, poll_example
 
 LOGGER = brewblox_logger(__name__)
@@ -52,7 +50,7 @@ def main():
     # Enable making HTTP requests
     # This allows you to access a shared aiohttp ClientSession
     # https://docs.aiohttp.org/en/stable/client_reference.html
-    http_client.setup(app)
+    http.setup(app)
 
     # To keep everything consistent, examples also have the setup() function
     # In here they register everything that must be done before the service starts

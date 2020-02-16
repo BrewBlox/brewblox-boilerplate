@@ -2,6 +2,8 @@
 
 There is some boilerplate code involved when creating a Brewblox service. This repository can be forked to avoid having to do the boring configuration.
 
+You're free to use whatever editor or IDE you like, but we preconfigured some useful settings for Visual Studio Code.
+
 Everything listed under **Required Changes** must be done before the package works as intended.
 
 ## How to use
