@@ -69,8 +69,5 @@ target/
 # pytest
 .pytest_cache/
 
-# IDE local files
-.vscode/
-
 # Python package files for building Docker
 docker/pkg/*

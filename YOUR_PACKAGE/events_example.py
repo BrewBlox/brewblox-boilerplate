@@ -7,6 +7,7 @@ For an example on how to publish events, see poll_example.py
 from typing import Union
 
 from aiohttp import web
+
 from brewblox_service import brewblox_logger, events
 
 LOGGER = brewblox_logger(__name__)
@@ -73,9 +74,5 @@ def setup(app: web.Application):
     and https://www.rabbitmq.com/tutorials/tutorial-five-python.html
     """
 
-    # Get the standard event listener
-    # This can be used to register as many subscriptions as you want
-    listener = events.get_listener(app)
-
     # Subscribe to all events on 'brewblox' exchange
-    listener.subscribe('brewblox', '#', on_message=on_message)
+    events.subscribe(app, 'brewblox', '#', on_message=on_message)
