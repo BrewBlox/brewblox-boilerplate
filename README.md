@@ -1,4 +1,4 @@
-# Boilerplate code for BrewBlox Service implementations
+# Boilerplate code for Brewblox service implementations
 
 There is some boilerplate code involved when creating a Brewblox service. This repository can be forked to avoid having to do the boring configuration.
 
@@ -47,7 +47,6 @@ By default, the names of the Docker and Github repositories are stored here. The
 
 **Required Changes:**
 * Change `DOCKER_REPO=you/your-package` to match the name of your docker image.
-* Change `GITHUB_REPO=you/YOUR-PACKAGE` to match the name of your github repository.
 
 
 ---
@@ -123,84 +122,57 @@ An example on how to test aiohttp endpoints you added. Feel free to remove this 
 
 
 ---
-### [docker/amd/Dockerfile](./docker/amd/Dockerfile)
-A docker file for running your package. To build, you need to copy the local version of your python package to `docker/dist/` first.
+### [docker/Dockerfile](./docker/Dockerfile)
+A docker file for running your package. To build the image for both desktop computers (AMD), and Raspberry Pi (ARM):
 
-The Dockerfiles are set up so both the AMD (desktop) and ARM variants can use the same input files.
 
-Example:
-```bash
-python3 setup.py sdist
+``` sh
+REPO=you/your-package
+TAG=local
 
-rm docker/dist/*
-cp dist/* docker/dist/
-pipenv lock --requirements > docker/requirements.txt
+# Buildx is an experimental feature
+export DOCKER_CLI_EXPERIMENTAL=enabled
 
-docker build \
-    --tag your-package:your-version \
-    --file docker/amd/Dockerfile \
-    docker/
+# Enable the QEMU emulator, required for building ARM images on an AMD computer
+docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
-# run it
-docker run your-package:your-version
+# Remove previous builder
+docker buildx rm bricklayer || true
+
+# Create and use a new builder
+docker buildx create --use --name bricklayer
+
+# Bootstrap the newly created builder
+docker buildx inspect --bootstrap
+
+# Build the image for amd and arm
+# Give the image a tag
+# Push the image to the docker registry
+docker buildx build \
+    --push \
+    --platform linux/amd64,linux/arm/v7 \
+    --tag "$REPO":"$TAG" \
+    docker
 ```
 
-To cover the most common use cases, the `brewblox-dev` CLI tool has the `localbuild` function.
+While you are in the same shell, you don't need to repeat all the commands before the actual build.
 
-It will read your .env file, run sdist, copy configuration to the docker directory, and build an image. Example:
+If you want to use the image locally, run the build command like this:
 
-```bash
-brewblox-dev localbuild
-docker run your-package:local
+``` sh
+docker buildx build \
+    --load \
+    --platform linux/amd64 \
+    --tag "$REPO":"$TAG" \
+    docker
 ```
 
-Explore its other arguments with `brewblox-dev --help`
 
 **Required Changes:**
 * Rename instances of `YOUR-PACKAGE` and `YOUR_PACKAGE` in the docker file to desired project and package names.
-
-
----
-### [docker/arm/Dockerfile](./docker/arm/Dockerfile)
-The same as for `docker/amd/Dockerfile`, but for Raspberry Pi targets.
-
-In order to build for Raspberry, you must also first enable the ARM compiler.
-
-Example:
-```bash
-python3 setup.py sdist
-
-rm docker/dist/*
-cp dist/* docker/dist/
-pipenv lock --requirements > docker/requirements.txt
-
-# Enable ARM compiler
-docker run --rm --privileged multiarch/qemu-user-static:register --reset
-
-# Build the Raspberry Pi version
-docker build \
-    --tag your-package:rpi-your-version \
-    --file docker/arm/Dockerfile \
-    docker/
-
-# Try to run Raspberry version
-# On the desktop, this will fail with "standard_init_linux.go:190: exec user process caused "exec format error""
-docker run --detach your-package:rpi-your-version
-```
-
-`brewblox-dev localbuild` can also generate ARM images. It will automatically enable the QEMU compiler, and prefix the tag with `rpi-`. To use:
-
-```
-brewblox-dev localbuild --arch arm
-docker run your-package:rpi-local
-```
-
-**Required Changes:**
-* Rename instances of `YOUR-PACKAGE` and `YOUR_PACKAGE` in the docker file to desired project and package names.
-
 
 ---
 ### [azure-pipelines.yml](./azure-pipelines.yml)
 [Azure](https://dev.azure.com) can automatically test and deploy all commits you push to GitHub. If you haven't enabled Azure Pipelines for your repository: don't worry, it won't do anything.
 
-To deploy your software, you will also need [PyPi](https://pypi.org/) and [Docker Hub](https://hub.docker.com/) accounts.
+To deploy your software, you will also need to create a [Docker Hub](https://hub.docker.com/) account, and register your image as a new repository.
