@@ -26,10 +26,11 @@ xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
 curl https://pyenv.run | bash
 ```
 
-Install Python 3.7 so it can be used:
+Install Python 3.7:
 ```
 pyenv install 3.7.7
 ```
+After installing, it may suggest to add initialization code to ~/.bashrc. Do that.
 
 Install [Poetry](https://python-poetry.org/)
 ```
