@@ -36,11 +36,20 @@ Install [Poetry](https://python-poetry.org/)
 pip3 install --user poetry
 ```
 
-Set Python environment (the python version used for this project).
+Configure and install the environment used for this project.
 
 **Run in the root of your cloned project**
 ```
 pyenv local 3.7.7
+poetry install
+```
+
+During development, you need to have your environment activated.
+When it is activated, your terminal prompt is prefixed with `(.venv)`.
+
+Visual Studio code with suggested settings does this automatically whenever you open a .py file. If you prefer using a different editor, you can do it manually by running:
+```
+poetry shell
 ```
 
 
