@@ -17,13 +17,6 @@ Everything listed under **Required Changes** must be done before the package wor
 
 ## Install
 
-First, make sure Python 3.7 is installed.
-
-```
-sudo add-apt-repository ppa:deadsnakes/ppa
-sudo apt install python3.7 python3.7-dev
-```
-
 Install [Pyenv](https://github.com/pyenv/pyenv):
 ```
 sudo apt-get update -y && sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
@@ -31,6 +24,11 @@ libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
 xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
 
 curl https://pyenv.run | bash
+```
+
+Install Python 3.7 so it can be used:
+```
+pyenv install 3.7.7
 ```
 
 Install [Poetry](https://python-poetry.org/)
@@ -70,9 +68,7 @@ Developer tools such as [Pytest](https://docs.pytest.org/en/latest/), [Flake8](h
 
 ---
 ### [.env](./.env)
-Project-specific environment variables can be stored here. `Pipenv` will automatically load it when executing a command in `pipenv run`.
-
-By default, the names of the Docker and Github repositories are stored here. They are read during the CI build.
+Project-specific environment variables can be stored here. By default, the name of the Docker repository (more on this below) is set here.
 
 **Required Changes:**
 * Change `DOCKER_REPO=you/your-package` to match the name of your docker image.
