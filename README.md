@@ -177,7 +177,7 @@ bash docker/before_build.sh
 docker buildx build \
     --push \
     --platform linux/amd64,linux/arm/v7 \
-    --tag "$REPO":"$TAG" \
+    --tag $REPO:$TAG \
     docker
 ```
 
