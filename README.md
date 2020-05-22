@@ -21,7 +21,7 @@ Install [Pyenv](https://github.com/pyenv/pyenv):
 ```
 sudo apt-get update -y && sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
 libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
-xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
+xz-utils tk-dev libffi-dev liblzma-dev python-openssl git python3-venv
 
 curl https://pyenv.run | bash
 ```
@@ -34,8 +34,9 @@ After installing, it may suggest to add initialization code to ~/.bashrc. Do tha
 
 Install [Poetry](https://python-poetry.org/)
 ```
-pip3 install --user poetry
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
 ```
+After installation, you'll need to log out and back in to update $PATH.
 
 Configure and install the environment used for this project.
 
