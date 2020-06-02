@@ -105,7 +105,7 @@ Your module readme (this file). It will automatically be displayed in Github.
 ---
 ### [YOUR_PACKAGE/](./YOUR_PACKAGE/)
 [\_\_main\_\_.py](./YOUR_PACKAGE/__main__.py),
-[events_example.py](./YOUR_PACKAGE/events_example.py),
+[subscribe_example.py](./YOUR_PACKAGE/subscribe_example.py),
 [http_example.py](./YOUR_PACKAGE/http_example.py),
 [poll_example.py](./YOUR_PACKAGE/poll_example.py)
 

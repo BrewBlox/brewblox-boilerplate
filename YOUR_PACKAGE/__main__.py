@@ -5,7 +5,8 @@ Example of how to import and use the brewblox service
 from argparse import ArgumentParser
 
 from brewblox_service import brewblox_logger, events, http, scheduler, service
-from YOUR_PACKAGE import events_example, http_example, poll_example
+
+from YOUR_PACKAGE import http_example, poll_example, subscribe_example
 
 LOGGER = brewblox_logger(__name__)
 
@@ -17,14 +18,7 @@ def create_parser(default_name='YOUR_PACKAGE') -> ArgumentParser:
     # For documentation see https://docs.python.org/3/library/argparse.html
     parser: ArgumentParser = service.create_parser(default_name=default_name)
 
-    # This argument will be used by poll_example
-    # After the service started, you can get the value in
-    # app['config']['history_exchange']
-    parser.add_argument('--history-exchange',
-                        help='RabbitMQ eventbus exchange. [%(default)s]',
-                        default='brewcast.history')
-
-    # This will also be used by poll_example
+    # This will be used by poll_example
     # Note how we specify the type as float
     parser.add_argument('--poll-interval',
                         help='Interval (in seconds) between polling. [%(default)s]',
@@ -55,7 +49,7 @@ def main():
     # To keep everything consistent, examples also have the setup() function
     # In here they register everything that must be done before the service starts
     # It's not required to use this pattern, but it makes code easier to understand
-    events_example.setup(app)
+    subscribe_example.setup(app)
     poll_example.setup(app)
     http_example.setup(app)
 
