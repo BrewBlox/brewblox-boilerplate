@@ -115,7 +115,7 @@ description = "Scaffolding for Brewblox backend services"
 name = "brewblox-service"
 optional = false
 python-versions = ">=3.7"
-version = "0.27.0"
+version = "0.27.1"
 
 [package.dependencies]
 aioamqp = ">=0.14.0,<0.15.0"
@@ -512,7 +512,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "83928ee9b25a2d650a68f7d39e31e7c9d125ed564db869cbbf92bd32d339d913"
+content-hash = "89c01970965e246e0b83e7db134115820c2a17c6914a655d2e5eedbb1c13268f"
 python-versions = ">=3.7"
 
 [metadata.files]
@@ -560,8 +560,8 @@ autopep8 = [
     {file = "autopep8-1.5.3.tar.gz", hash = "sha256:60fd8c4341bab59963dafd5d2a566e94f547e660b9b396f772afe67d8481dbf0"},
 ]
 brewblox-service = [
-    {file = "brewblox-service-0.27.0.tar.gz", hash = "sha256:a2ca0f5396a40a9d0ead103eccb4099c1d53f71fefe12efc2558b9309abf3739"},
-    {file = "brewblox_service-0.27.0-py3-none-any.whl", hash = "sha256:e7d51d4e363f3cbd508cdfa68f0d647b00d56cdebbd832b72bfbfbd64e734c4e"},
+    {file = "brewblox-service-0.27.1.tar.gz", hash = "sha256:f7fad8940d68c6ebaa2f9fc815572a10aad41fd4b9be9c83d4a1bf75170fe638"},
+    {file = "brewblox_service-0.27.1-py3-none-any.whl", hash = "sha256:0a74505f75891cb01a48941611fb94b99b7c62643843005bcfb18642d7f09703"},
 ]
 chardet = [
     {file = "chardet-3.0.4-py2.py3-none-any.whl", hash = "sha256:fc323ffcaeaed0e0a02bf4d117757b98aed530d9ed4531e3e15460124c106691"},
