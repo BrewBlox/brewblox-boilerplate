@@ -5,8 +5,7 @@ Example on how to set up a polling feature that publishes to the eventbus.
 import asyncio
 
 from aiohttp import web
-
-from brewblox_service import brewblox_logger, events, features, http, repeater
+from brewblox_service import brewblox_logger, features, http, mqtt, repeater
 
 LOGGER = brewblox_logger(__name__)
 
@@ -32,11 +31,11 @@ class PollingFeature(repeater.RepeaterFeature):
         LOGGER.info(f'Starting {self}')
 
         # Get values from config
-        # Name is added by the brewblox-service arguments
-        # poll_interval and history_exchange are added in __main__.create_parser()
+        # `name` and `history_topic` are defined by the brewblox-service arguments
+        # `poll_interval` is defined in __main__.create_parser()
         self.name = self.app['config']['name']
         self.interval = self.app['config']['poll_interval']
-        self.exchange = self.app['config']['history_exchange']
+        self.topic = self.app['config']['history_topic']
 
         # You can prematurely exit here.
         # Raise RepeaterCancelled(), and the base class will stop without a fuss.
@@ -57,7 +56,6 @@ class PollingFeature(repeater.RepeaterFeature):
         # These are available because we called the setup functions in __main__
         # If you ever get a KeyError when trying to get these, you forgot to call setup()
         session = http.session(self.app)
-        publisher = events.get_publisher(self.app)
 
         # jsonplaceholder does what it suggests:
         # It responds to queries with placeholder data
@@ -69,8 +67,9 @@ class PollingFeature(repeater.RepeaterFeature):
         # Time to send the data to RabbitMQ
         # For documentation on how to publish brewblox history data,
         # see https://brewblox.netlify.com/dev/reference/event_logging.html
-        await publisher.publish(
-            exchange=self.exchange,
-            routing=self.name,
-            message=data,
-        )
+        await mqtt.publish(self.app,
+                           self.topic,
+                           {
+                               'key': self.name,
+                               'data': data
+                           })
