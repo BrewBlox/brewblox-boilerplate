@@ -1,5 +1,5 @@
 """
-Example on how to set up a polling feature that publishes to the eventbus.
+Example on how to set up a feature that polls data, and publishes to the eventbus.
 """
 
 import asyncio
@@ -13,10 +13,10 @@ LOGGER = brewblox_logger(__name__)
 def setup(app: web.Application):
     # We register our feature here
     # It will now be automatically started when the service starts
-    features.add(app, PollingFeature(app))
+    features.add(app, PublishingFeature(app))
 
 
-class PollingFeature(repeater.RepeaterFeature):
+class PublishingFeature(repeater.RepeaterFeature):
     """
     repeater.RepeaterFeature is a base class for a common use case:
     - prepare

@@ -107,7 +107,7 @@ Your module readme (this file). It will automatically be displayed in Github.
 [\_\_main\_\_.py](./YOUR_PACKAGE/__main__.py),
 [subscribe_example.py](./YOUR_PACKAGE/subscribe_example.py),
 [http_example.py](./YOUR_PACKAGE/http_example.py),
-[poll_example.py](./YOUR_PACKAGE/poll_example.py)
+[publish_example.py](./YOUR_PACKAGE/publish_example.py)
 
 Your module. The directory name is used when importing your code in Python.
 

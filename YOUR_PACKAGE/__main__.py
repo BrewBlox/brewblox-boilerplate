@@ -4,9 +4,9 @@ Example of how to import and use the brewblox service
 
 from argparse import ArgumentParser
 
-from brewblox_service import brewblox_logger, events, http, scheduler, service
+from brewblox_service import brewblox_logger, http, mqtt, scheduler, service
 
-from YOUR_PACKAGE import http_example, poll_example, subscribe_example
+from YOUR_PACKAGE import http_example, publish_example, subscribe_example
 
 LOGGER = brewblox_logger(__name__)
 
@@ -18,7 +18,7 @@ def create_parser(default_name='YOUR_PACKAGE') -> ArgumentParser:
     # For documentation see https://docs.python.org/3/library/argparse.html
     parser: ArgumentParser = service.create_parser(default_name=default_name)
 
-    # This will be used by poll_example
+    # This will be used by publish_example
     # Note how we specify the type as float
     parser.add_argument('--poll-interval',
                         help='Interval (in seconds) between polling. [%(default)s]',
@@ -39,7 +39,7 @@ def main():
 
     # Enable event handling
     # Event subscription / publishing will be enabled after you call this function
-    events.setup(app)
+    mqtt.setup(app)
 
     # Enable making HTTP requests
     # This allows you to access a shared aiohttp ClientSession
@@ -50,7 +50,7 @@ def main():
     # In here they register everything that must be done before the service starts
     # It's not required to use this pattern, but it makes code easier to understand
     subscribe_example.setup(app)
-    poll_example.setup(app)
+    publish_example.setup(app)
     http_example.setup(app)
 
     # Add all default endpoints, and adds prefix to all endpoints
