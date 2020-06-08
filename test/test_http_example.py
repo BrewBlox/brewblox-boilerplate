@@ -14,6 +14,6 @@ async def app(app):
 
 
 async def test_hello(app, client):
-    res = await client.post('/example/endpoint', data='hello')
+    res = await client.post('/example/endpoint', json={'message': 'hello'})
     assert res.status == 200
     assert await res.text() == 'Hello world! (You said: "hello")'
