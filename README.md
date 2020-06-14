@@ -42,7 +42,6 @@ Configure and install the environment used for this project.
 
 **Run in the root of your cloned project**
 ```
-pyenv local 3.7.7
 poetry install
 ```
 
