@@ -1,6 +1,7 @@
 # Boilerplate code for Brewblox service implementations
 
-There is some boilerplate code involved when creating a Brewblox service. This repository can be forked to avoid having to do the boring configuration.
+There is some boilerplate code involved when creating a Brewblox service.
+This repository can be forked to avoid having to do the boring configuration.
 
 You're free to use whatever editor or IDE you like, but we preconfigured some useful settings for Visual Studio Code.
 
@@ -48,7 +49,8 @@ poetry install
 During development, you need to have your environment activated.
 When it is activated, your terminal prompt is prefixed with `(.venv)`.
 
-Visual Studio code with suggested settings does this automatically whenever you open a .py file. If you prefer using a different editor, you can do it manually by running:
+Visual Studio code with suggested settings does this automatically whenever you open a .py file.
+If you prefer using a different editor, you can do it manually by running:
 ```
 poetry shell
 ```
@@ -58,7 +60,8 @@ poetry shell
 
 ---
 ### [pyproject.toml](./pyproject.toml)
-The [pyproject](https://python-poetry.org/docs/pyproject/) file contains all kinds of Python settings. For those more familiar with Python packaging: it replaces the following files:
+The [pyproject](https://python-poetry.org/docs/pyproject/) file contains all kinds of Python settings.
+For those more familiar with Python packaging: it replaces the following files:
 - `setup.py`
 - `MANIFEST.in`
 - `requirements.txt`
@@ -120,7 +123,8 @@ For example: `your-package` and `your_package`.
 
 ---
 ### [test/conftest.py](./test/conftest.py)
-Project-level pytest fixtures. Some useful fixtures for testing any brewblox_service implementation are defined here. See tests in https://github.com/BrewBlox/brewblox-service/tree/develop/test for examples on how to use.
+Project-level pytest fixtures. Some useful fixtures for testing any brewblox_service implementation are defined here.
+See tests in https://github.com/BrewBlox/brewblox-service/tree/develop/test for examples on how to use.
 
 
 **Required Changes:**
@@ -199,9 +203,11 @@ docker buildx build \
 
 ---
 ### [azure-pipelines.yml](./azure-pipelines.yml)
-[Azure](https://dev.azure.com) can automatically test and deploy all commits you push to GitHub. If you haven't enabled Azure Pipelines for your repository: don't worry, it won't do anything.
+[Azure](https://dev.azure.com) can automatically test and deploy all commits you push to GitHub.
+If you haven't enabled Azure Pipelines for your repository: don't worry, it won't do anything.
 
-To deploy your software, you will also need to create a [Docker Hub](https://hub.docker.com/) account, and register your image as a new repository.
+To deploy your software, you will also need to create a [Docker Hub](https://hub.docker.com/) account,
+and register your image as a new repository.
 
 
 ## Deployment
@@ -224,9 +230,12 @@ You can now push images to `user`/`repository`.
 ### Azure Pipelines
 
 To automatically build and push those images, you'll need a Continuous Integration (CI) server.
-Here we'll set up Azure Pipelines as CI service, but you can do the same thing using [Travis](https://travis-ci.org/), [CircleCI](https://circleci.com/), [GitHub Actions](https://github.com/features/actions), [GitLab](https://about.gitlab.com/solutions/github/) or any of the others.
+Here we'll set up Azure Pipelines as CI service, but you can do the same thing using [Travis](https://travis-ci.org/),
+[CircleCI](https://circleci.com/), [GitHub Actions](https://github.com/features/actions),
+[GitLab](https://about.gitlab.com/solutions/github/) or any of the others.
 
-Go to https://azure.microsoft.com/en-us/services/devops/ and click "Start free with GitHub". You can then connect your GitHub account to Azure.
+Go to https://azure.microsoft.com/en-us/services/devops/ and click "Start free with GitHub".
+You can then connect your GitHub account to Azure.
 
 After logging in, create a new project. The name does not matter.
 
@@ -241,7 +250,8 @@ Save to confirm the group. These variables are now used during CI builds.
 
 Again in the side bar, go to Pipelines, and create a new Pipeline. Choose GitHub as source, and select your repository.
 
-Azure will automatically detect the `azure-pipelines.yml` file. Click "Run" to initialize it. It will ask you for permission to link Azure to your GitHub repository.
+Azure will automatically detect the `azure-pipelines.yml` file. Click "Run" to initialize it.
+It will ask you for permission to link Azure to your GitHub repository.
 
 When this is done, it will start its first build. You can view the build results on https://dev.azure.com/
 

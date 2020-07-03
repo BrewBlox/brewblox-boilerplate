@@ -1,5 +1,5 @@
 pool:
-  vmImage: 'Ubuntu-18.04'
+  vmImage: 'Ubuntu-20.04'
 
 trigger:
   tags:
@@ -44,36 +44,32 @@ steps:
     poetry install
   displayName: Install dependencies
 
-- bash: poetry run pytest
+- bash: |
+    poetry run pytest
   displayName: Run Pytest
 
 - bash: |
-    curl -L -o ~/.docker/cli-plugins/docker-buildx --create-dirs ${BUILDX_URL}
-    chmod a+x ~/.docker/cli-plugins/docker-buildx
-    docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-    docker buildx create --use
-    docker buildx inspect --bootstrap
+    curl -fsSL https://raw.githubusercontent.com/BrewBlox/deployed-images/develop/prepare_buildx.sh | bash
   displayName: Prepare buildx
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-  env:
-    BUILDX_URL: https://github.com/docker/buildx/releases/download/v0.3.1/buildx-v0.3.1.linux-amd64
+  condition: and(succeeded(), variables.BRANCH)
 
-- bash: echo $(DOCKER_PASSWORD) | docker login -u $(DOCKER_USER) --password-stdin
+- bash: |
+    echo $(DOCKER_PASSWORD) | docker login -u $(DOCKER_USER) --password-stdin
   displayName: Docker login
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  condition: and(succeeded(), variables.BRANCH)
 
-- bash: bash ./before_build.sh
+- bash: |
+    bash ./before_build.sh
   displayName: Run before_build.sh script
   workingDirectory: docker
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  condition: and(succeeded(), variables.BRANCH)
 
 - bash: >-
     docker buildx build
     --tag $(DOCKER_REPO):$(TAG)
-    --tag $(DOCKER_REPO):rpi-$(TAG)
     --build-arg service_info="$(git describe) @ $(date)"
     --push
     --platform linux/amd64,linux/arm/v7
     docker
-  displayName: Deploy Docker images with branch tags
+  displayName: Build Docker image
   condition: and(succeeded(), variables['BRANCH'])
