@@ -13,8 +13,8 @@ rm -rf dist docker/dist
 poetry install
 poetry build --format sdist
 
-# Copy the built page to the docker context
-cp -rf dist/ docker/
+# Copy the built package to the docker context
+cp -rf dist docker/
 
 # We want to install the exact same dependencies every build
 # Let poetry export a list of all dependencies to a format that Pip can use
