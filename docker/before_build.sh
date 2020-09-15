@@ -6,7 +6,7 @@ set -ex
 
 # Sets the working directory to the repository root
 # This makes it safe to call this script from anywhere
-pushd "$(dirname "$(readlink -f "$0")")/.." > /dev/null
+pushd "$(dirname "$0")/.." > /dev/null
 
 # Clean and build the Python package
 rm -rf dist docker/dist
