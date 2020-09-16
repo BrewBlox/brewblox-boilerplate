@@ -3,7 +3,7 @@
 There is some boilerplate code involved when creating a Brewblox service.
 This repository can be forked to avoid having to do the boring configuration.
 
-You're free to use whatever editor or IDE you like, but we preconfigured some useful settings for Visual Studio Code.
+You're free to use whatever editor or IDE you like, but we preconfigured some useful settings for [Visual Studio Code](https://code.visualstudio.com/).
 
 Everything listed under **Required Changes** must be done before the package works as intended.
 
@@ -27,17 +27,24 @@ xz-utils tk-dev libffi-dev liblzma-dev python-openssl git python3-venv
 curl https://pyenv.run | bash
 ```
 
+After installing, it may suggest to add initialization code to ~/.bashrc. Do that.
+
+To apply the changes to ~/.bashrc (or ~/.zshrc), run:
+```
+exec $SHELL --login
+```
+
 Install Python 3.7:
 ```
 pyenv install 3.7.7
 ```
-After installing, it may suggest to add initialization code to ~/.bashrc. Do that.
 
 Install [Poetry](https://python-poetry.org/)
 ```
 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+
+exec $SHELL --login
 ```
-After installation, you'll need to log out and back in to update $PATH.
 
 Configure and install the environment used for this project.
 
@@ -55,6 +62,14 @@ If you prefer using a different editor, you can do it manually by running:
 poetry shell
 ```
 
+Install [Docker](https://www.docker.com/101-tutorial)
+```
+curl -sL get.docker.com | sh
+
+sudo usermod -aG docker $USER
+
+reboot
+```
 
 ## Files
 
@@ -175,7 +190,7 @@ TAG=local
 # Will build your Python package, and copy the results to the docker/ directory
 bash docker/before_build.sh
 
-# Build the image for amd and arm
+# Build the image for AMD and ARM
 # Give the image a tag
 # Push the image to the docker registry
 docker buildx build \
@@ -220,7 +235,10 @@ Setting this up is free and easy, and this repository includes the required conf
 First, we'll need a Docker Hub account and repository to store created images.
 Go to https://hub.docker.com/ and create an account.
 
-After this is done, log in, and click `create repository`.
+After this is done: log in, click on the fingerprint icon, and go to "Account Settings" -> "Security".
+Generate an access token. We'll be using this to log in during CI builds.
+
+Now, go back to the main page by clicking on the Docker Hub logo, and click `create repository`.
 Pick a name, and click `create`. You don't need to connect the repository.
 
 You can now push images to `user`/`repository`.
@@ -244,7 +262,7 @@ Call this group `brewblox`.
 
 Add two variables:
 - `DOCKER_USER` is your Docker Hub user name.
-- `DOCKER_PASSWORD` is your Docker Hub password. Make the value secret by clicking the lock icon.
+- `DOCKER_PASSWORD` is the access token you generated earlier. Make the value secret by clicking the lock icon.
 
 Save to confirm the group. These variables are now used during CI builds.
 
