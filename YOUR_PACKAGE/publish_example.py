@@ -58,7 +58,7 @@ class PublishingFeature(repeater.RepeaterFeature):
         data = await response.json()
         LOGGER.info(data)
 
-        # Time to send the data to RabbitMQ
+        # Time to send the data to the eventbus
         # For documentation on how to publish brewblox history data,
         # see https://brewblox.netlify.com/dev/reference/event_logging.html
         await mqtt.publish(self.app,
@@ -73,3 +73,8 @@ def setup(app: web.Application):
     # We register our feature here
     # It will now be automatically started when the service starts
     features.add(app, PublishingFeature(app))
+
+
+def fget(app: web.Application) -> PublishingFeature:
+    # Retrieve the registered instance of PublishingFeature
+    return features.get(app, PublishingFeature)

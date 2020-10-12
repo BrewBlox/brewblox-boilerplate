@@ -83,3 +83,8 @@ def setup(app: web.Application):
     # We register our feature here
     # It will now be automatically started when the service starts
     features.add(app, SubscribingFeature(app))
+
+
+def fget(app: web.Application) -> SubscribingFeature:
+    # Retrieve the registered instance of SubscribingFeature
+    return features.get(app, SubscribingFeature)

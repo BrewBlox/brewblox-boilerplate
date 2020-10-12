@@ -85,6 +85,7 @@ For those more familiar with Python packaging: it replaces the following files:
 * Change the `name` field to your project name. This is generally the same as the repository name. This name is used when installing the package through Pip. </br> It is common for this name to equal the package name, but using "`-`" as separator instead of "`_`".
 * Change the `authors` field to your name and email.
 
+
 ---
 ### [tox.ini](./tox.ini)
 Developer tools such as [Pytest](https://docs.pytest.org/en/latest/), [Flake8](http://flake8.pycqa.org/en/latest/), and [Autopep8](https://github.com/hhatto/autopep8) use this file to find configuration options.
@@ -136,6 +137,7 @@ It is common for single-module projects to use "`-`" as a separator for the proj
 For example: `your-package` and `your_package`.
 * Change the import statements in .py files from `YOUR_PACKAGE` to your package name.
 
+
 ---
 ### [test/conftest.py](./test/conftest.py)
 Project-level pytest fixtures. Some useful fixtures for testing any brewblox_service implementation are defined here.
@@ -147,8 +149,16 @@ See tests in https://github.com/BrewBlox/brewblox-service/tree/develop/test for 
 
 
 ---
-### [test/test_http_example.py](./test/test_http_example.py)
-An example on how to test aiohttp endpoints you added. Feel free to remove this once you no longer need it.
+### [test/conftest.py](./test/conftest.py)
+Shared pytest fixtures for all your tests are defined here.
+The other test files provide examples on how to use the fixtures.
+
+
+---
+### [test/test_http_example.py](./test/test_http_example.py) / [test/test_publish_example.py](./test/test_publish_example.py) / [test/test_subscribe_example.py](./test/test_subscribe_example.py)
+The test code shows how to test the functionality added by the various examples.
+This includes multiple tricks for testing async code with pytest.
+You can remove the files if you no longer need them.
 
 
 ---
@@ -156,7 +166,6 @@ An example on how to test aiohttp endpoints you added. Feel free to remove this 
 Docker builds can only access files in the same directory as the `Dockerfile`.
 
 The `before_build.sh` copies the dependencies for the Docker build into the docker/ directory.
-
 
 
 ---
