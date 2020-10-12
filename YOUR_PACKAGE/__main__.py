@@ -47,7 +47,7 @@ def main():
     http.setup(app)
 
     # To keep everything consistent, examples also have the setup() function
-    # In here they register everything that must be done before the service starts
+    # In setup() they register everything that must be done before the service starts
     # It's not required to use this pattern, but it makes code easier to understand
     subscribe_example.setup(app)
     publish_example.setup(app)

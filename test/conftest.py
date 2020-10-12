@@ -23,12 +23,7 @@ def log_enabled():
 @pytest.fixture
 def app_config() -> dict:
     return {
-        'name': 'test_app',
-        'host': 'localhost',
-        'port': 1234,
-        'debug': False,
         'poll_interval': 5,
-        'history_topic': 'brewcast/history',
     }
 
 
@@ -36,11 +31,7 @@ def app_config() -> dict:
 def sys_args(app_config) -> list:
     return [str(v) for v in [
         'app_name',
-        '--name', app_config['name'],
-        '--host', app_config['host'],
-        '--port', app_config['port'],
         '--poll-interval', app_config['poll_interval'],
-        '--history-topic', app_config['history_topic'],
     ]]
 
 

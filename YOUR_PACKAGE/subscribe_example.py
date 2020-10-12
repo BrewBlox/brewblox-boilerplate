@@ -1,7 +1,7 @@
 """
 Example on how to listen to MQTT events.
 
-For an example on how to publish events, see poll_example.py
+For an example on how to publish events, see publish_example.py
 """
 
 
@@ -80,4 +80,6 @@ class SubscribingFeature(features.ServiceFeature):
 
 
 def setup(app: web.Application):
+    # We register our feature here
+    # It will now be automatically started when the service starts
     features.add(app, SubscribingFeature(app))

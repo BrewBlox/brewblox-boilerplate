@@ -10,12 +10,6 @@ from brewblox_service import brewblox_logger, features, http, mqtt, repeater
 LOGGER = brewblox_logger(__name__)
 
 
-def setup(app: web.Application):
-    # We register our feature here
-    # It will now be automatically started when the service starts
-    features.add(app, PublishingFeature(app))
-
-
 class PublishingFeature(repeater.RepeaterFeature):
     """
     repeater.RepeaterFeature is a base class for a common use case:
@@ -34,8 +28,8 @@ class PublishingFeature(repeater.RepeaterFeature):
         # `name` and `history_topic` are defined by the brewblox-service arguments
         # `poll_interval` is defined in __main__.create_parser()
         self.name = self.app['config']['name']
-        self.interval = self.app['config']['poll_interval']
         self.topic = self.app['config']['history_topic']
+        self.interval = self.app['config']['poll_interval']
 
         # You can prematurely exit here.
         # Raise RepeaterCancelled(), and the base class will stop without a fuss.
@@ -73,3 +67,9 @@ class PublishingFeature(repeater.RepeaterFeature):
                                'key': self.name,
                                'data': data
                            })
+
+
+def setup(app: web.Application):
+    # We register our feature here
+    # It will now be automatically started when the service starts
+    features.add(app, PublishingFeature(app))
