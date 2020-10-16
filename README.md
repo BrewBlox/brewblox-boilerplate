@@ -140,18 +140,11 @@ For example: `your-package` and `your_package`.
 
 ---
 ### [test/conftest.py](./test/conftest.py)
-Project-level pytest fixtures. Some useful fixtures for testing any brewblox_service implementation are defined here.
-See tests in https://github.com/BrewBlox/brewblox-service/tree/develop/test for examples on how to use.
-
+Shared pytest fixtures for all your tests are defined here.
+The other test files provide examples on how to use the fixtures.
 
 **Required Changes:**
 * Change the import from `YOUR_PACKAGE` to your package name.
-
-
----
-### [test/conftest.py](./test/conftest.py)
-Shared pytest fixtures for all your tests are defined here.
-The other test files provide examples on how to use the fixtures.
 
 
 ---
@@ -159,6 +152,9 @@ The other test files provide examples on how to use the fixtures.
 The test code shows how to test the functionality added by the various examples.
 This includes multiple tricks for testing async code with pytest.
 You can remove the files if you no longer need them.
+
+**Required Changes:**
+* Change the import from `YOUR_PACKAGE` to your package name.
 
 
 ---
