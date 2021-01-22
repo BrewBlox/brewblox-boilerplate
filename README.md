@@ -166,7 +166,7 @@ The `before_build.sh` copies the dependencies for the Docker build into the dock
 
 ---
 ### [docker/Dockerfile](./docker/Dockerfile)
-A docker file for running your package. To build the image for both desktop computers (AMD), and Raspberry Pi (ARM):
+A docker file for running your package. To build the image for both desktop computers (AMD64), Raspberry Pi (ARM32), and Raspberry Pi 64-bit (ARM64):
 
 
 Prepare the builder (run once per shell):
@@ -195,28 +195,38 @@ TAG=local
 # Will build your Python package, and copy the results to the docker/ directory
 bash docker/before_build.sh
 
-# Build the image for AMD and ARM
-# Give the image a tag
+# Set image name
+# Build the image for multiple architectures
+# - AMD64 -> linux/amd64
+# - ARM32 -> linux/arm/v7
+# - ARM64 -> linux/arm64/v8
 # Push the image to the docker registry
 docker buildx build \
-    --push \
-    --platform linux/amd64,linux/arm/v7 \
     --tag $REPO:$TAG \
+    --platform linux/amd64,linux/arm/v7,linux/arm64/v8 \
+    --push \
     docker
 ```
 
 While you are in the same shell, you don't need to repeat the build preparation.
 
-If you want to use the image locally, run the build command like this:
+If you only want to use the image locally, run the build commands like this:
 
 ``` sh
+REPO=you/your-package
+TAG=local
+
+# Will build your Python package, and copy the results to the docker/ directory
+bash docker/before_build.sh
+
+# Set image name
+# Load image for local use
+# This only builds for the current architecture (AMD64)
 docker buildx build \
-    --load \
-    --platform linux/amd64 \
     --tag $REPO:$TAG \
+    --load \
     docker
 ```
-
 
 **Required Changes:**
 * Rename instances of `YOUR-PACKAGE` and `YOUR_PACKAGE` in the docker file to desired project and package names.
