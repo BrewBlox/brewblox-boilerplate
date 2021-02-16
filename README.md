@@ -50,6 +50,7 @@ Configure and install the environment used for this project.
 
 **Run in the root of your cloned project**
 ```
+poetry run pip install --upgrade pip
 poetry install
 ```
 
