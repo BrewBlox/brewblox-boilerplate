@@ -20,6 +20,7 @@ autopep8 = "^1.5.5"
 pytest = "^6.2.2"
 flake8-quotes = "^3.2.0"
 aresponses = "^2.1.4"
+mock = "^4.0.3"
 
 [build-system]
 requires = ["poetry>=0.12"]
