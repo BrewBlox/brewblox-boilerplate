@@ -172,9 +172,6 @@ A docker file for running your package. To build the image for both desktop comp
 
 Prepare the builder (run once per shell):
 ``` sh
-# Buildx is an experimental feature
-export DOCKER_CLI_EXPERIMENTAL=enabled
-
 # Enable the QEMU emulator, required for building ARM images on an AMD computer
 docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
