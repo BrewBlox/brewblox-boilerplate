@@ -34,9 +34,9 @@ To apply the changes to ~/.bashrc (or ~/.zshrc), run:
 exec $SHELL --login
 ```
 
-Install Python 3.7:
+Install Python 3.9:
 ```
-pyenv install 3.7.7
+pyenv install 3.9.7
 ```
 
 Install [Poetry](https://python-poetry.org/)
