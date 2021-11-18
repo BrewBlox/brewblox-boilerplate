@@ -1,4 +1,4 @@
-FROM python:3.9 as base
+FROM python:3.9-buster as base
 
 COPY ./dist /app/dist
 COPY ./requirements.txt /app/requirements.txt
@@ -6,11 +6,13 @@ COPY ./requirements.txt /app/requirements.txt
 ENV PIP_EXTRA_INDEX_URL=https://www.piwheels.org/simple
 ENV PIP_FIND_LINKS=/wheeley
 
-RUN pip3 install wheel \
+RUN set -ex \
+    && mkdir /wheeley \
+    && pip3 install --upgrade pip wheel \
     && pip3 wheel --wheel-dir=/wheeley -r /app/requirements.txt \
     && pip3 wheel --wheel-dir=/wheeley /app/dist/*
 
-FROM python:3.9-slim
+FROM python:3.9-slim-buster
 EXPOSE 5000
 WORKDIR /app
 
@@ -19,7 +21,8 @@ ENV SERVICE_INFO=${service_info}
 
 COPY --from=base /wheeley /wheeley
 
-RUN pip3 install --no-index --find-links=/wheeley YOUR-PACKAGE \
+RUN set -ex \
+    && pip3 install --no-index --find-links=/wheeley YOUR-PACKAGE \
     && rm -rf /wheeley \
     && pip3 freeze
 
