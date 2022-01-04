@@ -3,10 +3,11 @@ Checks whether the publish_example.PublishingFeature works as expected.
 """
 
 
+from unittest.mock import AsyncMock
+
 import pytest
 from aresponses import ResponsesMockServer
 from brewblox_service import http, repeater, scheduler
-from mock import AsyncMock
 
 from YOUR_PACKAGE import publish_example
 

@@ -36,12 +36,12 @@ exec $SHELL --login
 
 Install Python 3.9:
 ```
-pyenv install 3.9.7
+pyenv install 3.9.9
 ```
 
 Install [Poetry](https://python-poetry.org/)
 ```
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+curl -sSL https://install.python-poetry.org | python3 -
 
 exec $SHELL --login
 ```
@@ -50,7 +50,8 @@ Configure and install the environment used for this project.
 
 **Run in the root of your cloned project**
 ```
-poetry run pip install --upgrade pip
+pyenv shell 3.9.9
+poetry env use 3.9.9
 poetry install
 ```
 

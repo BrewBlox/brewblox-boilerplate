@@ -2,9 +2,10 @@
 Checks whether subscribe_example.SubscribingFeature works as expected.
 """
 
+from unittest.mock import AsyncMock
+
 import pytest
 from brewblox_service.testing import matching
-from mock import AsyncMock
 
 from YOUR_PACKAGE import subscribe_example
 
