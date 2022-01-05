@@ -27,9 +27,24 @@ xz-utils tk-dev libffi-dev liblzma-dev python-openssl git python3-venv
 curl https://pyenv.run | bash
 ```
 
-After installing, it may suggest to add initialization code to ~/.bashrc. Do that.
+**Bash on Debian / Ubuntu**: to initialize pyenv on startup, press Ctrl-X, Ctrl-E in your terminal to open the batch command editor.
+Paste the code block below, and press Ctrl-X to save and run.
 
-To apply the changes to ~/.bashrc (or ~/.zshrc), run:
+```
+sed -Ei -e '/^([^#]|$)/ {a \
+export PYENV_ROOT="$HOME/.pyenv"
+a \
+export PATH="$PYENV_ROOT/bin:$PATH"
+a \
+' -e ':a' -e '$!{n;ba};}' ~/.profile
+echo 'eval "$(pyenv init --path)"' >>~/.profile
+
+echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+```
+
+If you use a different shell, see the relevant instructions at https://github.com/pyenv/pyenv.
+
+To apply the changes, run:
 ```
 exec $SHELL --login
 ```
