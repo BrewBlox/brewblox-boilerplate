@@ -112,13 +112,6 @@ For those more familiar with Python packaging: it replaces the following files:
 - Change the `name` field to your project name. This is generally the same as the repository name. This name is used when installing the package through Pip. \ It is common for this name to equal the package name, but using "`-`" as separator instead of "`_`".
 - Change the `authors` field to your name and email.
 
-**Issues:**
-
-At the time of writing, the Cryptography package fails to build on Piwheels. It will also fail to build from source, as a Rust toolchain is required.
-To resolve this, the dependency is pinned to 38.0.1 in the `[build-system]` section of `pyproject.toml`.
-
-Once the issue is resolved on <https://www.piwheels.org/project/cryptography/>, this dependency should be unpinned.
-
 ---
 
 ### [tox.ini](./tox.ini)
