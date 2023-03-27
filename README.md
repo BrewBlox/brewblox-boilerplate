@@ -125,16 +125,6 @@ Developer tools such as [Pytest](https://docs.pytest.org/en/latest/), [Flake8](h
 
 ---
 
-### [.env](./.env)
-
-Project-specific environment variables can be stored here. By default, the name of the Docker repository (more on this below) is set here.
-
-**Required Changes:**
-
-- Change `DOCKER_REPO=you/your-package` to match the name of your docker image.
-
----
-
 ### [.editorconfig](./.editorconfig)
 
 This file contains [EditorConfig](https://editorconfig.org/) configuration for this project. \
@@ -229,7 +219,7 @@ docker buildx inspect --bootstrap
 Build:
 
 ```bash
-REPO=you/your-package
+REPO=ghcr.io/you/your-package
 TAG=local
 
 # Will build your Python package, and copy the results to the docker/ directory
@@ -253,7 +243,7 @@ While you are in the same shell, you don't need to repeat the build preparation.
 If you only want to use the image locally, run the build commands like this:
 
 ``` sh
-REPO=you/your-package
+REPO=ghcr.io/you/your-package
 TAG=local
 
 # Will build your Python package, and copy the results to the docker/ directory
@@ -274,61 +264,27 @@ docker buildx build \
 
 ---
 
-### [azure-pipelines.yml](./azure-pipelines.yml)
+### [build.yml](./.github/workflows/build.yml)
 
-[Azure](https://dev.azure.com) can automatically test and deploy all commits you push to GitHub.
-If you haven't enabled Azure Pipelines for your repository: don't worry, it won't do anything.
+Github can automatically test, build, and deploy all commits you push.
+When enabled, this configuration will run tests, and then build a Docker image.
 
-To deploy your software, you will also need to create a [Docker Hub](https://hub.docker.com/) account,
-and register your image as a new repository.
+By default, the image is pushed to the Github Container Registry (ghcr.io).
+If you want to use an alternative registry like Docker Hub, you can do this by changing the login step,
+and then omitting the `ghcr.io/` prefix to your image.
 
-## Deployment
+When first pushed, Github sets the visibility of the image to `Internal`.
+To make it publicly available:
 
-Other Brewblox services are published and used as Docker images.
-Setting this up is free and easy, and this repository includes the required configuration.
+- Navigate to the Github page of your repository.
+- Click on the image name under "Packages" on the right-hand side of the repository page.
+- Click on "Package settings" on the right-hand side of the package page.
+- Scroll down to the "Danger Zone", and click "Change package visibility".
+- Set visibility to "Public", and type the name of the image to confirm.
 
-### Docker Hub
+**Required Changes:**
 
-First, we'll need a Docker Hub account and repository to store created images.
-Go to <https://hub.docker.com/> and create an account.
-
-After this is done: log in, click on the fingerprint icon, and go to "Account Settings" -> "Security".
-Generate an access token. We'll be using this to log in during CI builds.
-
-Now, go back to the main page by clicking on the Docker Hub logo, and click `create repository`.
-Pick a name, and click `create`. You don't need to connect the repository.
-
-You can now push images to `user`/`repository`.
-
-**Don't forget to set the DOCKER_REPO field in the .env file**.
-
-### Azure Pipelines
-
-To automatically build and push those images, you'll need a Continuous Integration (CI) server.
-Here we'll set up Azure Pipelines as CI service, but you can do the same thing using [Travis](https://travis-ci.org/),
-[CircleCI](https://circleci.com/), [GitHub Actions](https://github.com/features/actions),
-[GitLab](https://about.gitlab.com/solutions/github/) or any of the others.
-
-Go to <https://azure.microsoft.com/en-us/services/devops/> and click "Start free with GitHub".
-You can then connect your GitHub account to Azure.
-
-After logging in, create a new project. The name does not matter.
-
-In the side bar, go to Pipelines, click on Library, and create a new variable group.
-Call this group `brewblox`.
-
-Add two variables:
-
-- `DOCKER_USER` is your Docker Hub user name.
-- `DOCKER_PASSWORD` is the access token you generated earlier. Make the value secret by clicking the lock icon.
-
-Save to confirm the group. These variables are now used during CI builds.
-
-Again in the side bar, go to Pipelines, and create a new Pipeline. Choose GitHub as source, and select your repository.
-
-Azure will automatically detect the `azure-pipelines.yml` file. Click "Run" to initialize it.
-It will ask you for permission to link Azure to your GitHub repository.
-
-When this is done, it will start its first build. You can view the build results on <https://dev.azure.com/>
+- Remove the `if: false` line in the `build` job to enable CI.
+- Set the `DOCKER_IMAGE` variable to the desired Docker image name.
 
 That's it. Happy coding!

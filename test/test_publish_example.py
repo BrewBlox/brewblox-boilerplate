@@ -2,8 +2,7 @@
 Checks whether the publish_example.PublishingFeature works as expected.
 """
 
-
-from unittest.mock import AsyncMock
+import json
 
 import pytest
 from aresponses import ResponsesMockServer
@@ -15,19 +14,15 @@ TESTED = publish_example.__name__
 
 
 @pytest.fixture(autouse=True)
-def m_mqtt(mocker):
+def m_publish(mocker):
     """
     We don't want to create and connect to a MQTT broker here.
     That takes too long, and is too fragile.
-    We'll just mock the used mqtt functions, and assert they are called as expected.
+    We'll just mock the used mqtt function, and assert it is called as expected.
 
     Set `autouse=True` if you want all tests and fixtures to use this mock.
     """
-    m = mocker.patch(TESTED + '.mqtt')
-
-    # async functions must be mocked explicitly
-    m.publish = AsyncMock()
-
+    m = mocker.patch(TESTED + '.mqtt.publish', autospec=True)
     return m
 
 
@@ -99,7 +94,7 @@ async def test_prepare_cancel(app, client):
         await feature.prepare()
 
 
-async def test_run(app, client, m_mqtt, aresponses: ResponsesMockServer):
+async def test_run(app, client, m_publish, aresponses: ResponsesMockServer):
     feature = publish_example.PublishingFeature(app)
 
     # We mock this specific URL
@@ -125,13 +120,13 @@ async def test_run(app, client, m_mqtt, aresponses: ResponsesMockServer):
     # We mocked the response to the HTTP request,
     # and we mocked the `mqtt.publish()` function.
     # We expect publish() to be called with the mock data.
-    m_mqtt.publish.assert_awaited_once_with(
+    m_publish.assert_awaited_once_with(
         app,
         topic,
-        {
+        json.dumps({
             'key': name,
             'data': {'hello': 'world'},
-        },
+        }),
     )
 
     # ... and we expect the mocked requests to have been used

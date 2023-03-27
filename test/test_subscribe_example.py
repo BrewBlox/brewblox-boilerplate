@@ -2,7 +2,7 @@
 Checks whether subscribe_example.SubscribingFeature works as expected.
 """
 
-from unittest.mock import AsyncMock
+import json
 
 import pytest
 from brewblox_service.testing import matching
@@ -21,15 +21,12 @@ def m_mqtt(mocker):
 
     Set `autouse=True` if you want all tests and fixtures to use this mock.
     """
-    m = mocker.patch(TESTED + '.mqtt')
+    mocker.patch(TESTED + '.mqtt.subscribe', autospec=True)
+    mocker.patch(TESTED + '.mqtt.listen', autospec=True)
+    mocker.patch(TESTED + '.mqtt.unsubscribe', autospec=True)
+    mocker.patch(TESTED + '.mqtt.unlisten', autospec=True)
 
-    # async functions must be mocked explicitly
-    m.subscribe = AsyncMock()
-    m.listen = AsyncMock()
-    m.unsubscribe = AsyncMock()
-    m.unlisten = AsyncMock()
-
-    return m
+    return subscribe_example.mqtt
 
 
 @pytest.fixture
@@ -102,7 +99,7 @@ async def test_on_message(app, client, mocker):
     s_logger = mocker.spy(subscribe_example, 'LOGGER')
 
     feature = subscribe_example.fget(app)
-    await feature.on_message('hello', {'to': 'world'})
+    await feature.on_message('hello', json.dumps({'to': 'world'}))
 
     # The actual call:
     # LOGGER.info(f'Message on topic {topic} = {message}')

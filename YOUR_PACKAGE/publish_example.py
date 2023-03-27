@@ -3,6 +3,7 @@ Example on how to set up a feature that polls data, and publishes to the eventbu
 """
 
 import asyncio
+import json
 
 from aiohttp import web
 from brewblox_service import brewblox_logger, features, http, mqtt, repeater
@@ -63,10 +64,10 @@ class PublishingFeature(repeater.RepeaterFeature):
         # see https://brewblox.netlify.com/dev/reference/event_logging.html
         await mqtt.publish(self.app,
                            self.topic,
-                           {
+                           json.dumps({
                                'key': self.name,
                                'data': data
-                           })
+                           }))
 
 
 def setup(app: web.Application):

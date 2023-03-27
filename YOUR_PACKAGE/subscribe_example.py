@@ -56,7 +56,7 @@ class SubscribingFeature(features.ServiceFeature):
         await mqtt.unsubscribe(app, 'brewcast/history/#')
         await mqtt.unlisten(app, 'brewcast/history/#', self.on_message)
 
-    async def on_message(self, topic: str, message: dict):
+    async def on_message(self, topic: str, message: str):
         """Example message handler for MQTT events.
 
         Services can choose to publish / subscribe events to communicate between them.
@@ -71,9 +71,9 @@ class SubscribingFeature(features.ServiceFeature):
                 The topic to which this event was published.
                 This will always be specific - no wildcards.
 
-            message (dict):
+            message (str):
                 The content of the event.
-                Messages handled by mqtt.py are always parsed to JSON.
+                Empty messages are always empty strings, not None.
 
         """
         LOGGER.info(f'Message on topic {topic} = {message}')
