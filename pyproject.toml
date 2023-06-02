@@ -9,7 +9,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">=3.9,<4"
 brewblox-service = "^2.1.0"
-cryptography = "40.0.1"
+cryptography = "41.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "*"
@@ -22,5 +22,5 @@ aresponses = "*"
 flake8-quotes = "*"
 
 [build-system]
-requires = ["poetry>=0.12", "cryptography==40.0.1"]
+requires = ["poetry>=0.12", "cryptography==41.0.0"]
 build-backend = "poetry.masonry.api"
