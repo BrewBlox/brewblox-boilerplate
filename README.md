@@ -188,15 +188,23 @@ You can remove the files if you no longer need them.
 
 ---
 
-### [docker/before_build.sh](./docker/before_build.sh)
+### [tasks.py](./tasks.py)
 
-Docker builds can only access files in the same directory as the `Dockerfile`.
+[Invoke](https://www.pyinvoke.org/) is a convenient way to add build scripts.
+It is a replacement for Bash or Make, but with the advantage of using the (significantly more readable) Python.
 
-The `before_build.sh` copies the dependencies for the Docker build into the docker/ directory.
+By default, two scripts are available:
+
+- **build** generates the Python distributable that is then loaded into the Docker image.
+- **local-docker** is a shortcut for building a local Docker image.
+
+**Required Changes:**
+
+- Change `IMAGE` from `ghcr.io/you/your-package` to your Docker image name.
 
 ---
 
-### [docker/Dockerfile](./docker/Dockerfile)
+### [Dockerfile](./Dockerfile)
 
 A docker file for running your package. To build the image for both desktop computers (AMD64), Raspberry Pi (ARM32), and Raspberry Pi 64-bit (ARM64):
 
@@ -222,8 +230,8 @@ Build:
 REPO=ghcr.io/you/your-package
 TAG=local
 
-# Will build your Python package, and copy the results to the docker/ directory
-bash docker/before_build.sh
+# Will build your Python package, and place the results in the dist/ directory
+invoke build
 
 # Set image name
 # Build the image for multiple architectures
@@ -231,11 +239,11 @@ bash docker/before_build.sh
 # - ARM32 -> linux/arm/v7
 # - ARM64 -> linux/arm64/v8
 # Push the image to the docker registry
-docker buildx build \
+docker build \
     --tag $REPO:$TAG \
     --platform linux/amd64,linux/arm/v7,linux/arm64/v8 \
     --push \
-    docker
+    .
 ```
 
 While you are in the same shell, you don't need to repeat the build preparation.
@@ -246,16 +254,15 @@ If you only want to use the image locally, run the build commands like this:
 REPO=ghcr.io/you/your-package
 TAG=local
 
-# Will build your Python package, and copy the results to the docker/ directory
-bash docker/before_build.sh
+# Will build your Python package, and place the results in the dist/ directory
+invoke build
 
 # Set image name
 # Load image for local use
 # This only builds for the current architecture (AMD64)
-docker buildx build \
+docker build \
     --tag $REPO:$TAG \
-    --load \
-    docker
+    .
 ```
 
 **Required Changes:**

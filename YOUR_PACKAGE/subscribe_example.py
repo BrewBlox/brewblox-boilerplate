@@ -8,10 +8,41 @@ For an example on how to publish events, see publish_example.py
 from aiohttp import web
 from brewblox_service import brewblox_logger, features, mqtt
 
+from YOUR_PACKAGE.models import ServiceConfig
+
 LOGGER = brewblox_logger(__name__)
 
 
 class SubscribingFeature(features.ServiceFeature):
+
+    def __init__(self, app: web.Application):
+        super().__init__(app)
+        config: ServiceConfig = app['config']
+
+        # Topics can include wildcards: + or #
+        #
+        # + matches a single level.
+        #
+        # "controller/+/sensor" subscriptions will receive (example) topics:
+        # - controller/block/sensor
+        # - controller/container/sensor
+        #
+        # But not:
+        # - controller
+        # - controller/nested/block/sensor
+        # - controller/block/sensor/nested
+        #
+        # # is a greedier wildcard: it will match as few or as many values as it can
+        # Plain # subscriptions will receive all messages published to the eventbus.
+        #
+        # A subscription of "controller/#" will receive:
+        # - controller
+        # - controller/block/sensor
+        # - controller/container/nested/sensor
+        #
+        # For more information on this, see
+        # http://www.steves-internet-guide.com/understanding-mqtt-topics/
+        self.topic = f'{config.history_topic}/#'
 
     async def startup(self, app: web.Application):
         """Add event handling
@@ -19,33 +50,9 @@ class SubscribingFeature(features.ServiceFeature):
         To get messages, you need to call `mqtt.subscribe(topic)` and `mqtt.listen(topic, callback)`.
 
         You can set multiple listeners for each call to subscribe, and use wildcards to filter messages.
-
-        Wildcards are + or #
-
-        + matches a single level.
-
-        "controller/+/sensor" subscriptions will receive (example) topics:
-        - controller/block/sensor
-        - controller/container/sensor
-
-        But not:
-        - controller
-        - controller/nested/block/sensor
-        - controller/block/sensor/nested
-
-        # is a greedier wildcard: it will match as few or as many values as it can
-        Plain # subscriptions will receive all messages published to the eventbus.
-
-        A subscription of "controller/#" will receive:
-        - controller
-        - controller/block/sensor
-        - controller/container/nested/sensor
-
-        For more information on this, see
-        http://www.steves-internet-guide.com/understanding-mqtt-topics/
         """
-        await mqtt.listen(app, 'brewcast/history/#', self.on_message)
-        await mqtt.subscribe(app, 'brewcast/history/#')
+        await mqtt.listen(app, self.topic, self.on_message)
+        await mqtt.subscribe(app, self.topic)
 
     async def shutdown(self, app: web.Application):
         """Shutdown and remove event handlers
@@ -53,10 +60,10 @@ class SubscribingFeature(features.ServiceFeature):
         unsubscribe() and unlisten() must be called
         with the same arguments as subscribe() and listen()
         """
-        await mqtt.unsubscribe(app, 'brewcast/history/#')
-        await mqtt.unlisten(app, 'brewcast/history/#', self.on_message)
+        await mqtt.unsubscribe(app, self.topic)
+        await mqtt.unlisten(app, self.topic, self.on_message)
 
-    async def on_message(self, topic: str, message: str):
+    async def on_message(self, topic: str, payload: str):
         """Example message handler for MQTT events.
 
         Services can choose to publish / subscribe events to communicate between them.
@@ -71,12 +78,12 @@ class SubscribingFeature(features.ServiceFeature):
                 The topic to which this event was published.
                 This will always be specific - no wildcards.
 
-            message (str):
+            payload (str):
                 The content of the event.
                 Empty messages are always empty strings, not None.
 
         """
-        LOGGER.info(f'Message on topic {topic} = {message}')
+        LOGGER.info(f'Message on topic {topic} = {payload}')
 
 
 def setup(app: web.Application):

@@ -8,6 +8,8 @@ import json
 from aiohttp import web
 from brewblox_service import brewblox_logger, features, http, mqtt, repeater
 
+from YOUR_PACKAGE.models import ServiceConfig
+
 LOGGER = brewblox_logger(__name__)
 
 
@@ -28,9 +30,10 @@ class PublishingFeature(repeater.RepeaterFeature):
         # Get values from config
         # `name` and `history_topic` are defined by the brewblox-service arguments
         # `poll_interval` is defined in __main__.create_parser()
-        self.name = self.app['config']['name']
-        self.topic = self.app['config']['history_topic']
-        self.interval = self.app['config']['poll_interval']
+        config: ServiceConfig = self.app['config']
+        self.name = config.name
+        self.topic = config.history_topic
+        self.interval = config.poll_interval
 
         # You can prematurely exit here.
         # Raise RepeaterCancelled(), and the base class will stop without a fuss.
@@ -70,10 +73,10 @@ class PublishingFeature(repeater.RepeaterFeature):
                            }))
 
 
-def setup(app: web.Application):
+def setup(app: web.Application, **kwargs):
     # We register our feature here
     # It will now be automatically started when the service starts
-    features.add(app, PublishingFeature(app))
+    features.add(app, PublishingFeature(app, **kwargs))
 
 
 def fget(app: web.Application) -> PublishingFeature:

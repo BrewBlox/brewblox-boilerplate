@@ -5,6 +5,7 @@ on:
     branches: ["**"]
   pull_request:
     branches: [develop, edge]
+  workflow_dispatch: {}
 
 env:
   DOCKER_IMAGE: ghcr.io/you/your-package
@@ -47,9 +48,9 @@ jobs:
           poetry run pytest
           poetry run flake8
 
-      - name: Run setup script
+      - name: Build
         run: |
-          bash docker/before_build.sh
+          poetry run invoke build
 
       - name: Build Docker image
         uses: docker/build-push-action@v4
@@ -58,4 +59,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm/v7,linux/arm64/v8
-          context: docker
+          context: .

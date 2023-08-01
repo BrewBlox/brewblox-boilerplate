@@ -10,11 +10,6 @@ from pydantic import BaseModel
 routes = web.RouteTableDef()
 
 
-def setup(app: web.Application):
-    # Register routes in this file (/example/endpoint in our case)
-    app.router.add_routes(routes)
-
-
 class EndpointMessage(BaseModel):
     """
     For more options, see https://pydantic-docs.helpmanual.io/
@@ -58,3 +53,8 @@ class ExampleEndpoint(PydanticView):
         return web.json_response(
             EndpointMessage(content=f'Hi! You said `{message.content}`.').dict()
         )
+
+
+def setup(app: web.Application):
+    # Register routes in this file (/example/endpoint in our case)
+    app.router.add_routes(routes)
