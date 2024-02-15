@@ -2,8 +2,6 @@
     "python.defaultInterpreterPath": ".venv/bin/python",
     "python.terminal.activateEnvInCurrentTerminal": true,
     "python.terminal.activateEnvironment": true,
-    "python.linting.flake8Enabled": true,
-    "python.linting.pylintEnabled": false,
     "python.testing.pytestArgs": [
         "."
     ],

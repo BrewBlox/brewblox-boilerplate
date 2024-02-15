@@ -1,4 +1,4 @@
-# Boilerplate code for Brewblox service implementations
+# Boilerplate code for Brewblox services
 
 There is some boilerplate code involved when creating a Brewblox service.
 This repository can be used as a template to get started.
@@ -73,7 +73,7 @@ However, it is recommended to use an editor that recognizes and uses `.editorcon
 
 ### [README.md](./README.md)
 
-Your module readme (this file). It will automatically be displayed in Github.
+Your repository readme (this file). It will automatically be displayed in Github.
 
 **Required Changes:**
 
@@ -83,13 +83,9 @@ Your module readme (this file). It will automatically be displayed in Github.
 
 ### [your_package/](./your_package/)
 
-[http_example.py](./your_package/http_example.py),
-[mqtt_publish_example.py](./your_package/mqtt_publish_example.py),
-[mqtt_subscribe_example.py](./your_package/mqtt_subscribe_example.py)
+The source code directory. The directory name is used when importing your code in Python.
 
-Your package source code directory. The directory name is used when importing your code in Python.
-
-You can find examples for common service actions here.
+Here you can find both code scaffolding, and examples for common features.
 
 **Required Changes:**
 
@@ -109,18 +105,7 @@ This includes the service configuration, which is set through environment variab
 
 ---
 
-### [test/conftest.py](./test/conftest.py)
-
-Shared pytest fixtures for all your tests are defined here.
-The other test files provide examples on how to use the fixtures.
-
-**Required Changes:**
-
-- Change `your_package` to your package name.
-
----
-
-### [test/test_http_example.py](./test/test_http_example.py)
+### [test/](./test/)
 
 The test code shows how to setup tests and call endpoints.
 This includes multiple tricks for testing async code with pytest.
@@ -128,7 +113,7 @@ You can remove the files if you no longer need them.
 
 **Required Changes:**
 
-- Change `your_package` to your package name.
+- Change `your_package` imports to your package name.
 
 ---
 
