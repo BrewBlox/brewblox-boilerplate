@@ -1,25 +1,41 @@
-FROM python:3.9-bullseye as base
-
-COPY ./dist /app/dist
+FROM python:3.11-bookworm as base
 
 ENV PIP_EXTRA_INDEX_URL=https://www.piwheels.org/simple
 ENV PIP_FIND_LINKS=/wheeley
+ENV VENV=/app/.venv
+ENV PATH="$VENV/bin:$PATH"
 
-RUN set -ex \
-    && mkdir /wheeley \
-    && pip3 install --upgrade pip wheel setuptools \
-    && pip3 wheel --wheel-dir=/wheeley -r /app/dist/requirements.txt \
-    && pip3 wheel --wheel-dir=/wheeley /app/dist/*.tar.gz
+COPY ./dist /app/dist
 
-FROM python:3.9-slim-bullseye
+RUN <<EOF
+    set -ex
+
+    mkdir /wheeley
+    python3 -m venv $VENV
+    pip3 install --upgrade pip wheel setuptools
+    pip3 wheel --wheel-dir=/wheeley -r /app/dist/requirements.txt
+    pip3 wheel --wheel-dir=/wheeley /app/dist/*.tar.gz
+EOF
+
+FROM python:3.11-slim-bookworm
 EXPOSE 5000
 WORKDIR /app
 
+ENV PIP_FIND_LINKS=/wheeley
+ENV VENV=/app/.venv
+ENV PATH="$VENV/bin:$PATH"
+
 COPY --from=base /wheeley /wheeley
+COPY ./entrypoint.sh ./entrypoint.sh
 
-RUN set -ex \
-    && pip3 install --no-index --find-links=/wheeley YOUR-PACKAGE \
-    && rm -rf /wheeley \
-    && pip3 freeze
+RUN <<EOF
+    set -ex
 
-ENTRYPOINT ["python3", "-m", "your_package"]
+    python3 -m venv $VENV
+    pip3 install --no-index your_package
+    pip3 freeze
+    rm -rf /wheeley
+EOF
+
+
+ENTRYPOINT ["bash", "./entrypoint.sh"]

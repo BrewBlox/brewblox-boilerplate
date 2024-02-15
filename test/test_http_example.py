@@ -1,53 +1,38 @@
 """
-Checks whether we can call the hello endpoint.
+Tests the HTTP example endpoints.
+
+This includes minimal setup. We don't load what we don't need for this test.
 """
 
 import pytest
-from brewblox_service.testing import response
+from fastapi import FastAPI
+from httpx import AsyncClient
 
-from YOUR_PACKAGE import http_example
+from your_package import http_example
 
 
 @pytest.fixture
-async def setup(app):
+def app() -> FastAPI:
     """
-    This overrides the fixture defined in conftest.py.
-    The `client` fixture in conftest.py will now use this one.
+    We override the `app` fixture from conftest.py
+    to set up the components we need for these tests.
+
+    Now, when we use the `client` fixture, it uses this `app` fixture.
     """
-    http_example.setup(app)
+
+    app = FastAPI()
+    app.include_router(http_example.router)
+
+    return app
 
 
-async def test_hello(app, client):
-    """
-    This test depends on a running application.
-    We depend on the `setup` fixture to get an application where `http_example.setup(app)`
-    has been called.
-    We depend on the `client` fixture where the app was started,
-    and is now listening for HTTP requests.
-    """
-    # Basic call to the GET handler
-    res = await client.get('/example/endpoint')
-    assert res.status == 200
-    assert (await res.json()) == {'content': 'Hello world!'}
+async def test_endpoint(client: AsyncClient):
+    # We didn't prefix the router with service name in `app.include_router()`
+    # The endpoint is router prefix (/example) + endpoint address (/endpoint)
+    resp = await client.post('/example/endpoint', json={'content': 'hello'})
+    assert resp.status_code == 200
+    assert resp.json() == {'content': 'Hi! You said `hello`.'}
 
-    # The `response()` test helper automatically checks the status code, and calls res.json()
-    assert await response(
-        client.get('/example/endpoint')
-    ) == {'content': 'Hello world!'}
-
-    # Call the POST handler
-    assert await response(
-        client.post('/example/endpoint', json={'content': 'hello'})
-    ) == {'content': 'Hi! You said `hello`.'}
-
-    # The response handler can also check for non-200 responses
-    # For example, if we send the wrong arguments
-    assert await response(
-        client.post('/example/endpoint', json={'content': ['hello', 'world']}),
-        status=400
-    ) == [{
-        'loc': ['content'],
-        'msg': 'str type expected',
-        'type': 'type_error.str',
-        'in': 'body',
-    }]
+    # If we send invalid data, the service immediately returns a 422 error
+    resp = await client.post('/example/endpoint', json={})
+    assert resp.status_code == 422

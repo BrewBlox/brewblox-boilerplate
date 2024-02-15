@@ -1,7 +1,7 @@
 # Boilerplate code for Brewblox service implementations
 
 There is some boilerplate code involved when creating a Brewblox service.
-This repository can be forked to avoid having to do the boring configuration.
+This repository can be used as a template to get started.
 
 You're free to use whatever editor or IDE you like, but we preconfigured some useful settings for [Visual Studio Code](https://code.visualstudio.com/).
 
@@ -18,61 +18,7 @@ Everything listed under **Required Changes** must be done before the package wor
 
 ## Install
 
-Install [Pyenv](https://github.com/pyenv/pyenv):
-
-```bash
-sudo apt-get update -y && sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
-libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
-xz-utils tk-dev libffi-dev liblzma-dev git python3-venv
-
-curl https://pyenv.run | bash
-```
-
-**Bash on Debian / Ubuntu**: to initialize pyenv on startup, press Ctrl-X, Ctrl-E in your terminal to open the batch command editor.
-Paste the code block below, and press Ctrl-X to save and run.
-
-```bash
-sed -Ei -e '/^([^#]|$)/ {a \
-export PYENV_ROOT="$HOME/.pyenv"
-a \
-export PATH="$PYENV_ROOT/bin:$PATH"
-a \
-' -e ':a' -e '$!{n;ba};}' ~/.profile
-echo 'eval "$(pyenv init --path)"' >>~/.profile
-
-echo 'eval "$(pyenv init -)"' >> ~/.bashrc
-```
-
-If you use a different shell, see the relevant instructions at <https://github.com/pyenv/pyenv>.
-
-To apply the changes, run:
-
-```bash
-exec $SHELL --login
-```
-
-Install Python 3.9:
-
-```bash
-pyenv install 3.9.9
-```
-
-Install [Poetry](https://python-poetry.org/):
-
-```bash
-curl -sSL https://install.python-poetry.org | python3 -
-
-exec $SHELL --login
-```
-
-Configure and install the environment used for this project. \
-**Run in the root of your cloned project**
-
-```bash
-pyenv shell 3.9.9
-poetry env use 3.9.9
-poetry install
-```
+Install the Python dev environment: <https://brewblox.com/dev/python_env.html>
 
 During development, you need to have your environment activated.
 When it is activated, your terminal prompt is prefixed with `(.venv)`.
@@ -109,19 +55,9 @@ For those more familiar with Python packaging: it replaces the following files:
 
 **Required Changes:**
 
-- Change the `name` field to your project name. This is generally the same as the repository name. This name is used when installing the package through Pip. \ It is common for this name to equal the package name, but using "`-`" as separator instead of "`_`".
+- Change the `name` field to your package name. This is generally the same as the repository name, but with any dash (`-`) characters replaced with underscores (`_`).
 - Change the `authors` field to your name and email.
-
----
-
-### [tox.ini](./tox.ini)
-
-Developer tools such as [Pytest](https://docs.pytest.org/en/latest/), [Flake8](http://flake8.pycqa.org/en/latest/), and [Autopep8](https://github.com/hhatto/autopep8) use this file to find configuration options.
-
-**Required Changes:**
-
-- Change `--cov=YOUR_PACKAGE` to refer to your module name.
-- The `--cov-fail-under=100` makes the build fail if code coverage is less than 100%. It is optional, but recommended. Remove the `#` comment character to enable it.
+- Change the `description` field to a short description of your service.
 
 ---
 
@@ -145,23 +81,31 @@ Your module readme (this file). It will automatically be displayed in Github.
 
 ---
 
-### [YOUR_PACKAGE/](./YOUR_PACKAGE/)
+### [your_package/](./your_package/)
 
-[\_\_main\_\_.py](./YOUR_PACKAGE/__main__.py),
-[subscribe_example.py](./YOUR_PACKAGE/subscribe_example.py),
-[http_example.py](./YOUR_PACKAGE/http_example.py),
-[publish_example.py](./YOUR_PACKAGE/publish_example.py)
+[http_example.py](./your_package/http_example.py),
+[mqtt_publish_example.py](./your_package/mqtt_publish_example.py),
+[mqtt_subscribe_example.py](./your_package/mqtt_subscribe_example.py)
 
-Your module. The directory name is used when importing your code in Python.
+Your package source code directory. The directory name is used when importing your code in Python.
 
 You can find examples for common service actions here.
 
 **Required Changes:**
 
-- Rename to the desired module name. This name can't include "`-`" characters. \
-It is common for single-module projects to use "`-`" as a separator for the project name, and "`_`" for the module. \
-For example: `your-package` and `your_package`.
-- Change the import statements in .py files from `YOUR_PACKAGE` to your package name.
+- Rename to the desired module name. This name can't include "`-`" characters.
+
+---
+
+### [models.py](./your_package/models.py)
+
+[Pydantic](https://docs.pydantic.dev) data models.
+This includes the service configuration, which is set through environment variables.
+
+**Required Changes:**
+
+- Change the default service name value from `your_package` to your service name.
+- Change the default env prefix from `your_package_` to your preferred prefix. Typically this is either package name or service name.
 
 ---
 
@@ -172,102 +116,57 @@ The other test files provide examples on how to use the fixtures.
 
 **Required Changes:**
 
-- Change the import from `YOUR_PACKAGE` to your package name.
+- Change `your_package` to your package name.
 
 ---
 
-### [test/test_http_example.py](./test/test_http_example.py) / [test/test_publish_example.py](./test/test_publish_example.py) / [test/test_subscribe_example.py](./test/test_subscribe_example.py)
+### [test/test_http_example.py](./test/test_http_example.py)
 
-The test code shows how to test the functionality added by the various examples.
+The test code shows how to setup tests and call endpoints.
 This includes multiple tricks for testing async code with pytest.
 You can remove the files if you no longer need them.
 
 **Required Changes:**
 
-- Change the import from `YOUR_PACKAGE` to your package name.
+- Change `your_package` to your package name.
+
+---
+
+### [Dockerfile](./Dockerfile)
+
+A docker file for your service. Building the Dockerfile installs your Python distributable, and creates a Docker image.
+
+**Required Changes:**
+
+- Change `your_package` to your package name.
+
+---
+
+### [entrypoint.sh](./entrypoint.sh)
+
+This script is the entrypoint for the Docker container.
+It starts [Uvicorn](https://www.uvicorn.org/), the ASGI web server that runs the service code.
+
+**Required Changes:**
+
+- Change `your_package` to your package name.
 
 ---
 
 ### [tasks.py](./tasks.py)
 
 [Invoke](https://www.pyinvoke.org/) is a convenient way to add build scripts.
-It is a replacement for Bash or Make, but with the advantage of using the (significantly more readable) Python.
 
-By default, two scripts are available:
+By default, four tasks are available:
 
-- **build** generates the Python distributable that is then loaded into the Docker image.
-- **local-docker** is a shortcut for building a local Docker image.
+- **dist** generates the Python distributable that can then be used to build a Docker image.
+- **prepx** creates a Docker builder for multiplatform images.
+- **build** creates a local Docker image for testing. This image is not uploaded.
+- **release** creates and uploads a multiplatform image.
 
 **Required Changes:**
 
 - Change `IMAGE` from `ghcr.io/you/your-package` to your Docker image name.
-
----
-
-### [Dockerfile](./Dockerfile)
-
-A docker file for running your package. To build the image for both desktop computers (AMD64), Raspberry Pi (ARM32), and Raspberry Pi 64-bit (ARM64):
-
-Prepare the builder (run once per shell):
-
-```bash
-# Enable the QEMU emulator, required for building ARM images on an AMD computer
-docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-
-# Remove previous builder
-docker buildx rm bricklayer || true
-
-# Create and use a new builder
-docker buildx create --use --name bricklayer
-
-# Bootstrap the newly created builder
-docker buildx inspect --bootstrap
-```
-
-Build:
-
-```bash
-REPO=ghcr.io/you/your-package
-TAG=local
-
-# Will build your Python package, and place the results in the dist/ directory
-invoke build
-
-# Set image name
-# Build the image for multiple architectures
-# - AMD64 -> linux/amd64
-# - ARM32 -> linux/arm/v7
-# - ARM64 -> linux/arm64/v8
-# Push the image to the docker registry
-docker build \
-    --tag $REPO:$TAG \
-    --platform linux/amd64,linux/arm/v7,linux/arm64/v8 \
-    --push \
-    .
-```
-
-While you are in the same shell, you don't need to repeat the build preparation.
-
-If you only want to use the image locally, run the build commands like this:
-
-``` sh
-REPO=ghcr.io/you/your-package
-TAG=local
-
-# Will build your Python package, and place the results in the dist/ directory
-invoke build
-
-# Set image name
-# Load image for local use
-# This only builds for the current architecture (AMD64)
-docker build \
-    --tag $REPO:$TAG \
-    .
-```
-
-**Required Changes:**
-
-- Rename instances of `YOUR-PACKAGE` and `YOUR_PACKAGE` in the docker file to desired project and package names.
 
 ---
 
@@ -292,6 +191,6 @@ To make it publicly available:
 **Required Changes:**
 
 - Remove the `if: false` line in the `build` job to enable CI.
-- Set the `DOCKER_IMAGE` variable to the desired Docker image name.
+- Set the `DOCKER_IMAGE` variable to your Docker image name.
 
 That's it. Happy coding!

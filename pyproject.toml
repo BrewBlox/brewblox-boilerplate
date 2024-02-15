@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "YOUR-PACKAGE"
+name = "your_package"
 version = "0.1.0"
 description = "ADD DESCRIPTION HERE"
 authors = ["Code Fairies Inc <noreply@santa.com>"]
@@ -7,21 +7,38 @@ license = "GPL-3.0"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.9,<4"
-brewblox-service = "^3.1.2"
-cryptography = "40.0.1"
+python = ">=3.11,<4"
+fastapi = "^0.109.2"
+uvicorn = { extras = ["standard"], version = "^0.27.1" }
+pydantic-settings = "^2.1.0"
+fastapi-mqtt = "^2.1.0"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "*"
-pytest-cov = "*"
 pytest-mock = "*"
-pytest-aiohttp = "*"
 flake8 = "*"
 autopep8 = "*"
-aresponses = "*"
 flake8-quotes = "*"
-invoke = "==2.*"
+pytest = "*"
+invoke = "*"
+flake8-pyproject = "*"
+pytest-asyncio = "*"
+pytest-httpx = "*"
+asgi-lifespan = "*"
 
 [build-system]
-requires = ["poetry>=0.12", "cryptography==40.0.1"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+addopts = """
+    --ignore=app/
+    --durations=3
+    """
+
+[tool.flake8]
+max-line-length = 120
+exclude = ".venv"
+
+[tool.autopep8]
+max-line-length = 120

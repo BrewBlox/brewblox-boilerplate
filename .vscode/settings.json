@@ -5,7 +5,6 @@
     "python.linting.flake8Enabled": true,
     "python.linting.pylintEnabled": false,
     "python.testing.pytestArgs": [
-        "--no-cov",
         "."
     ],
     "python.testing.unittestEnabled": false,
@@ -13,6 +12,5 @@
     "python.languageServer": "Pylance",
     "[python]": {
         "editor.defaultFormatter": "ms-python.autopep8"
-    },
-    "python.formatting.provider": "none"
+    }
 }
